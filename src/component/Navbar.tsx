@@ -1,9 +1,9 @@
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import React, { useState } from "react";
 
-const Navbar = () => {
-  const [open, setOpen] = useState(false);
+const Navbar: React.FC = () => {
+  const [open, setOpen] = useState<boolean>(false);
   return (
     <nav className="flex justify-between items-center h-[100px]">
       <div className="basis-3/5 flex items-center gap-[50px]">
@@ -69,24 +69,42 @@ const Navbar = () => {
         <div
           className={`${
             open ? "right-0" : "right-[-50%]"
-          } absolute bg-black text-white h-screen w-1/2 top-0 transition-all duration-400 ease-in`}
+          } absolute bg-black text-white h-screen w-1/2 top-0 transition-all duration-400 ease-in flex flex-col items-center justify-center gap-[5px]`}
         >
-          <a className="" href="/">
+          <a
+            className=" transform hover:scale-105 transition-all duration-400 ease-in"
+            href="/"
+          >
             Home
           </a>
-          <a className="" href="/">
+          <a
+            className=" transform hover:scale-105 transition-all duration-400 ease-in"
+            href="/"
+          >
             About
           </a>
-          <a className="" href="/">
+          <a
+            className=" transform hover:scale-105 transition-all duration-400 ease-in"
+            href="/"
+          >
             Contact
           </a>
-          <a className="" href="/">
+          <a
+            className=" transform hover:scale-105 transition-all duration-400 ease-in"
+            href="/"
+          >
             Agents
           </a>
-          <a className="" href="/">
+          <a
+            className=" transform hover:scale-105 transition-all duration-400 ease-in"
+            href="/"
+          >
             Sign in
           </a>
-          <a className="" href="/">
+          <a
+            className="hidden md:block transform hover:scale-105 transition-all duration-400 ease-in"
+            href="/"
+          >
             Sign up
           </a>
         </div>
