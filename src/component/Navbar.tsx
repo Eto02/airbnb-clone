@@ -1,4 +1,4 @@
-import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faPaw } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 
@@ -11,10 +11,7 @@ const Navbar: React.FC = () => {
           href="/"
           className=" transform hover:scale-105 transition-all duration-400 ease-in font-bold text-[20px] flex items-center  gap-[10px] "
         >
-          <img
-            className="w-[28px]"
-            src="https://pbs.twimg.com/profile_images/1604935435007901696/BpgKDmvE_400x400.jpg"
-          ></img>
+          <FontAwesomeIcon className="w-7" icon={faPaw} />
           <span className=" md:hidden lg:block">
             {import.meta.env.VITE_APP_NAME}
           </span>

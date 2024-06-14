@@ -1,6 +1,7 @@
+import React from "react";
 import SearchBar from "../component/SearchBar";
 
-const HomPage = () => {
+const HomPage: React.FC = () => {
   return (
     <div className="flex h-full ">
       <div className="lg:basis-3/5">

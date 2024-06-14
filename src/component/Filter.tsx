@@ -1,7 +1,8 @@
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React from "react";
 
-const Filter = () => {
+const Filter: React.FC = () => {
   return (
     <div className="flex flex-col gap-[10px]">
       <h1 className="font-light text[24px]">
