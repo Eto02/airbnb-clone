@@ -3,6 +3,7 @@ import "./index.css";
 import HomPage from "./pages/HomePage";
 import ListPage from "./pages/ListPage";
 import Layout from "./pages/Layout";
+import DetailPage from "./pages/DetailPage";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
       {
         path: "/list",
         element: <ListPage />,
+      },
+      {
+        path: "/detail/:id",
+        element: <DetailPage />,
       },
     ],
   },
