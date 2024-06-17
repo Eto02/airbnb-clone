@@ -4,6 +4,7 @@ import HomPage from "./pages/HomePage";
 import ListPage from "./pages/ListPage";
 import Layout from "./pages/Layout";
 import DetailPage from "./pages/DetailPage";
+import Profile from "./pages/Profile";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
       {
         path: "/detail/:id",
         element: <DetailPage />,
+      },
+      {
+        path: "/profile",
+        element: <Profile />,
       },
     ],
   },

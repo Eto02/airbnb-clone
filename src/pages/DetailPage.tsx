@@ -20,9 +20,9 @@ import Map from "../component/Map";
 
 const DetailPage: React.FC = () => {
   return (
-    <div className="flex flex-col lg:flex-row h-screen ">
+    <div className="flex flex-col lg:flex-row h-full overflow-y-scroll lg:overflow-hidden">
       <div className="basis-3/5 mt-0" id="left">
-        <div className="pr-12 lg:pr-6">
+        <div className="pr-0 md:pr-6 lg:pr-12">
           <Slider images={singlePostData.images} />
           <div className="mt-12" id="info">
             <div className=" flex justify-between">
