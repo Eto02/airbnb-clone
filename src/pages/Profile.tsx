@@ -3,8 +3,11 @@ import List from "../component/List";
 
 const Profile = () => {
   return (
-    <div className="flex h-full">
-      <div className="basis-3/5 overflow-y-scroll" id="left">
+    <div className="flex flex-col lg:flex-row h-full overflow-y-scroll lg:overflow-y-visible">
+      <div
+        className="basis-3/5 overflow-y-visible lg:overflow-y-scroll flex-none h-max lg:h-full"
+        id="left"
+      >
         <div className="pr-12 flex flex-col gap-12 pb-12">
           <div className="flex justify-between items-center">
             <h1 className="font-light">User Information</h1>
@@ -40,7 +43,7 @@ const Profile = () => {
           </div>
         </div>
       </div>
-      <div className="basis-2/5 h-full  bg-[#84DCC6]" id="right">
+      <div className="basis-2/5 h-full flex-none bg-[#84DCC6]" id="right">
         <div className="px-5 h-full">
           <Chat />
         </div>

@@ -15,15 +15,22 @@ interface CardProps {
 }
 const Card: React.FC<CardProps> = ({ item }) => {
   return (
-    <div className="flex gap-5">
-      <Link to={`/${item.id}`} className="basis-2/5 h-52 " id="left">
+    <div className="flex gap-5 w-full">
+      <Link
+        to={`/${item.id}`}
+        className="basis-2/5 h-52 hidden md:block"
+        id="left"
+      >
         <img
           src={item.img}
           alt={item.title}
           className=" h-full w-full object-cover rounded-lg"
         />
       </Link>
-      <div className="basis-3/5 flex flex-col justify-between gap-2" id="right">
+      <div
+        className="md:basis-3/5 flex flex-col justify-between gap-2"
+        id="right"
+      >
         <h2>
           <Link
             className="text-xl font-semibold text-[#444] transition-all durtion-[0.4s] ease-in-out hover:text-black hover:scale-[1.01]"
