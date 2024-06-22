@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const Navbar: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
-  const user: boolean = false;
+  const user: boolean = true;
 
   return (
     <nav className="flex justify-between items-center h-[100px]">
@@ -67,13 +67,13 @@ const Navbar: React.FC = () => {
           <>
             <a
               className="hidden md:block py-[12px] px-[24px] m-[20px] transform hover:scale-105 transition-all duration-400 ease-in"
-              href="/"
+              href="/login"
             >
               Sign in
             </a>
             <a
               className="hidden md:block py-[12px] px-[24px] m-[20px] transform hover:scale-105 transition-all duration-400 ease-in bg-[#FFFFFF]"
-              href="/"
+              href="/register"
             >
               Sign up
             </a>
