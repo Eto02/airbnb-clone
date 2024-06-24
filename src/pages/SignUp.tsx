@@ -1,12 +1,42 @@
-import { Link } from "react-router-dom";
+import axios from "axios";
+import React, { FormEvent, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import myAxios from "../lib/axiosConfig";
+interface RegisterFormData {
+  username: string;
+  email: string;
+  password: string;
+}
 
-function Register() {
-  const handleSubmit = async (e) => {
+const Register: React.FC = () => {
+  const [erorr, setErorr] = useState<string>("");
+
+  const nav = useNavigate();
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    const formData = new FormData(e.target);
-    const username = formData.get("username");
-    const email = formData.get("email");
-    const password = formData.get("password");
+    const formData = new FormData(e.currentTarget);
+    const username = formData.get("username") as string;
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+    const data: RegisterFormData = {
+      username,
+      email,
+      password,
+    };
+
+    try {
+      await myAxios.post("/api/auth/register", data);
+      nav("/login");
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        let errorMessage: string = error.response?.data?.errors;
+        console.log(typeof errorMessage);
+        if (typeof errorMessage !== "string")
+          errorMessage = error.response?.data?.errors[0]?.message;
+        setErorr(errorMessage);
+      }
+    }
   };
 
   return (
@@ -35,16 +65,17 @@ function Register() {
           <button className="p-3 rounded border-0 bg-[teal] text-white font-bold cursor-pointer">
             Register
           </button>
+          {erorr && <span className="text-red-500/50">{erorr}</span>}
           <Link className="text-sm text-gray-border-gray-400 " to="/login">
             Do you have an account?
           </Link>
         </form>
       </div>
-      <div className="relative basis-2/5 flex bg-[#84DCC6] items-center justify-center">
-        <img className="w-[115%] absolute" src="/bg.png" alt="" />
+      <div className="hidden lg:block lg:basis-2/5 bg-[#84DCC6] relative">
+        <img className="absolute w-[115%] right-0 " src="/bg.png" alt="" />
       </div>
     </div>
   );
-}
+};
 
 export default Register;

@@ -1,6 +1,7 @@
+import React from "react";
 import { Link } from "react-router-dom";
 
-function Login() {
+const Login: React.FC = () => {
   return (
     <div className="h-full flex">
       <div className="basis-3/5 h-full flex items-center justify-center">
@@ -26,11 +27,11 @@ function Login() {
           </Link>
         </form>
       </div>
-      <div className="relative basis-2/5 flex bg-[#84DCC6] items-center justify-center">
-        <img className="w-[115%] absolute" src="/bg.png" alt="" />
+      <div className="hidden lg:block lg:basis-2/5 bg-[#84DCC6] relative">
+        <img className="absolute w-[115%] right-0 " src="/bg.png" alt="" />
       </div>
     </div>
   );
-}
+};
 
 export default Login;
