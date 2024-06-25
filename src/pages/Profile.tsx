@@ -4,6 +4,7 @@ import List from "../component/List";
 import { useNavigate } from "react-router-dom";
 import myAxios from "../lib/axiosConfig";
 import { AuthContext, AuthContextType } from "../context/authContext";
+import { Link } from "react-router-dom";
 
 const Profile: React.FC = () => {
   const nav = useNavigate();
@@ -29,9 +30,12 @@ const Profile: React.FC = () => {
         <div className="pr-12 flex flex-col gap-12 pb-12">
           <div className="flex justify-between items-center">
             <h1 className="font-light">User Information</h1>
-            <button className="py-3 px-6 bg-[#84DCC6] cursor-pointer border-0">
+            <Link
+              to="/profile/update"
+              className="py-3 px-6 bg-[#84DCC6] cursor-pointer border-0"
+            >
               Update Profile
-            </button>
+            </Link>
           </div>
           <div className="flex flex-col gap-5">
             <span className=" flex items-center gap-5">
