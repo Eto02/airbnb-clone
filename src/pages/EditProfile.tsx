@@ -1,13 +1,38 @@
 import { FormEvent, useContext, useState } from "react";
 import { AuthContext, AuthContextType } from "../context/authContext";
+import myAxios from "../lib/axiosConfig";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const EditProfile: React.FC = () => {
-  const { currentUser } = useContext(AuthContext) as AuthContextType;
+  const { currentUser, updateUser } = useContext(
+    AuthContext
+  ) as AuthContextType;
   const [error, setError] = useState("");
+
+  const nav = useNavigate();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
+    const { username, email, password } = Object.fromEntries(formData);
+    try {
+      const res = await myAxios.put(`/api/user/${currentUser?.id}`, {
+        username,
+        email,
+        password,
+      });
+      updateUser(res.data?.data);
+      nav("/profile");
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        let errorMessage: string = error.response?.data;
+        console.log(errorMessage);
+        if (typeof errorMessage !== "string")
+          errorMessage = error.response?.data?.errors[0]?.message;
+        setError(errorMessage);
+      }
+    }
   };
 
   return (

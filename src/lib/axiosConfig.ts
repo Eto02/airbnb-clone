@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from "axios";
 
 const myAxios = axios.create({
   baseURL: import.meta.env.VITE_BE_ADDRESS,
+  withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },

@@ -10,7 +10,7 @@ interface LoginData {
 }
 
 const Login: React.FC = () => {
-  const [erorr, setErorr] = useState<string>("");
+  const [error, setError] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { updateUser } = useContext(AuthContext) as AuthContextType;
@@ -19,7 +19,7 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     setIsLoading(true);
-    setErorr("");
+    setError("");
     const formData = new FormData(e.currentTarget);
     const username = formData.get("username") as string;
     const password = formData.get("password") as string;
@@ -37,7 +37,7 @@ const Login: React.FC = () => {
         let errorMessage: string = error.response?.data?.errors;
         if (typeof errorMessage !== "string")
           errorMessage = error.response?.data?.errors[0]?.message;
-        setErorr(errorMessage);
+        setError(errorMessage);
       }
     } finally {
       setIsLoading(false);
@@ -70,7 +70,7 @@ const Login: React.FC = () => {
           >
             Login
           </button>
-          {erorr && <span className="text-red-500/50">{erorr}</span>}
+          {error && <span className="text-red-500/50">{error}</span>}
           <Link className="text-sm text-gray-border-gray-400" to="/register">
             {"Don't"} you have an account?
           </Link>
