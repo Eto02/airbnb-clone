@@ -1,11 +1,12 @@
 import { faBars, faPaw } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext, AuthContextType } from "../context/authContext";
 
 const Navbar: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
-  const user: boolean = true;
+  const { currentUser } = useContext(AuthContext) as AuthContextType;
 
   return (
     <nav className="flex justify-between items-center h-[100px]">
@@ -45,14 +46,14 @@ const Navbar: React.FC = () => {
         </a>
       </div>
       <div className="basis-2/5  flex items-center justify-end bg-transparent lg:bg-[#84DCC6] h-full">
-        {!user ? (
+        {currentUser ? (
           <div className="flex items-center font-bold">
             <img
-              src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+              src={currentUser.avatar || "/noavatar.jpg"}
               className="w-10 h-10 rounded-[50%] object-cover m-5"
               alt=""
             />
-            <span className="hidden md:block">John Doe</span>
+            <span className="hidden md:block">{currentUser.username}</span>
             <Link
               className="hidden md:block py-3 px-6  bg-[#FFFFFF] cursor-pointer border-0 m-5 relative"
               to="/profile"

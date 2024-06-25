@@ -1,13 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
 import Chat from "../component/Chat";
 import List from "../component/List";
 import { useNavigate } from "react-router-dom";
+import myAxios from "../lib/axiosConfig";
+import { AuthContext, AuthContextType } from "../context/authContext";
 
 const Profile: React.FC = () => {
   const nav = useNavigate();
+  const { currentUser, updateUser } = useContext(
+    AuthContext
+  ) as AuthContextType;
+
   const handleLoogout = async (): Promise<void> => {
     try {
-      localStorage.removeItem("user");
+      await myAxios.post("/api/auth/logout");
+      updateUser(null);
       nav("/");
     } catch (error) {
       console.log(error);
@@ -31,15 +38,15 @@ const Profile: React.FC = () => {
               Avatar:
               <img
                 className="w-10 h-10 rounded-[50%] object-cover"
-                src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                src={currentUser?.avatar || "/noavatar.jpg"}
                 alt="avatar"
               />
             </span>
             <span className=" flex items-center gap-5">
-              Username: <b>John Doe</b>
+              Username: <b>{currentUser?.username}</b>
             </span>
             <span className=" flex items-center gap-5">
-              Email: <b>john@mail.com</b>
+              Email: <b>{currentUser?.email}</b>
             </span>
             <button
               onClick={handleLoogout}

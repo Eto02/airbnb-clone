@@ -1,7 +1,8 @@
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import myAxios from "../lib/axiosConfig";
 import axios from "axios";
+import { AuthContext, AuthContextType } from "../context/authContext";
 
 interface LoginData {
   username: string;
@@ -12,6 +13,7 @@ const Login: React.FC = () => {
   const [erorr, setErorr] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const { updateUser } = useContext(AuthContext) as AuthContextType;
   const nav = useNavigate();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
@@ -28,8 +30,7 @@ const Login: React.FC = () => {
 
     try {
       const res = await myAxios.post("/api/auth/login", data);
-      console.log(res);
-      localStorage.setItem("user", JSON.stringify(res.data.data));
+      updateUser(res.data.data);
       nav("/");
     } catch (error) {
       if (axios.isAxiosError(error)) {
