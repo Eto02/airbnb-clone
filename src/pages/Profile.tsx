@@ -1,7 +1,18 @@
+import React from "react";
 import Chat from "../component/Chat";
 import List from "../component/List";
+import { useNavigate } from "react-router-dom";
 
-const Profile = () => {
+const Profile: React.FC = () => {
+  const nav = useNavigate();
+  const handleLoogout = async (): Promise<void> => {
+    try {
+      localStorage.removeItem("user");
+      nav("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="flex flex-col lg:flex-row h-full overflow-y-scroll lg:overflow-y-visible">
       <div
@@ -30,6 +41,12 @@ const Profile = () => {
             <span className=" flex items-center gap-5">
               Email: <b>john@mail.com</b>
             </span>
+            <button
+              onClick={handleLoogout}
+              className="w-[100px] bg-[teal] border-0 text-white px-5 py-2 cursor-pointer rounded-md"
+            >
+              Logout
+            </button>
           </div>
           <div className="flex justify-between">
             <h1 className="font-light">My List</h1>

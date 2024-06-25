@@ -10,11 +10,14 @@ interface RegisterFormData {
 
 const Register: React.FC = () => {
   const [erorr, setErorr] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const nav = useNavigate();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
+    setIsLoading(true);
+    setErorr("");
     const formData = new FormData(e.currentTarget);
     const username = formData.get("username") as string;
     const email = formData.get("email") as string;
@@ -31,11 +34,12 @@ const Register: React.FC = () => {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         let errorMessage: string = error.response?.data?.errors;
-        console.log(typeof errorMessage);
         if (typeof errorMessage !== "string")
           errorMessage = error.response?.data?.errors[0]?.message;
         setErorr(errorMessage);
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -62,7 +66,10 @@ const Register: React.FC = () => {
             type="password"
             placeholder="Password"
           />
-          <button className="p-3 rounded border-0 bg-[teal] text-white font-bold cursor-pointer">
+          <button
+            disabled={isLoading}
+            className="p-3 rounded border-0 bg-[teal] text-white font-bold cursor-pointer"
+          >
             Register
           </button>
           {erorr && <span className="text-red-500/50">{erorr}</span>}
