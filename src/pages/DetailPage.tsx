@@ -139,7 +139,7 @@ const DetailPage: React.FC = () => {
           </div>
           <div className="flex justify-between">
             <button className=" p-3 flex items-center gap-1 border border-solid border-[#84DCC6] rounded cursor-pointer">
-              <FontAwesomeIcon lassName="w-4 h-4" icon={faComment} /> Send a
+              <FontAwesomeIcon className="w-4 h-4" icon={faComment} /> Send a
               message
             </button>
             <button className=" p-3 flex items-center gap-1 border border-solid border-[#84DCC6] rounded cursor-pointer">

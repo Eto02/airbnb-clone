@@ -9,6 +9,7 @@ import Register from "./pages/SignUp";
 import Layout from "./pages/Layout";
 import AuthLayout from "./pages/AuthLayout";
 import ProfileUpdatePage from "./pages/EditProfile";
+import CreatePostPage from "./pages/CreatePostPage";
 
 const router = createBrowserRouter([
   {
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
       {
         path: "/profile/update",
         element: <ProfileUpdatePage />,
+      },
+      {
+        path: "/create/post",
+        element: <CreatePostPage />,
       },
     ],
   },

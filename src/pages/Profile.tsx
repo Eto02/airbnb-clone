@@ -61,9 +61,11 @@ const Profile: React.FC = () => {
           </div>
           <div className="flex justify-between">
             <h1 className="font-light">My List</h1>
-            <button className="py-3 px-6 bg-[#84DCC6] cursor-pointer border-0">
-              Create New Post
-            </button>
+            <Link to="/create/post">
+              <button className="py-3 px-6 bg-[#84DCC6] cursor-pointer border-0">
+                Create New Post
+              </button>
+            </Link>
           </div>
           <List />
           <div>

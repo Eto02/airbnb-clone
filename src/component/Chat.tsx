@@ -63,7 +63,7 @@ const Chat = () => {
       </div>
       {chat && (
         <div className="flex-1 bg-white flex flex-col justify-between">
-          <div className=" bg-[#99d4c6] p-2 font-bold flex items-center justify-between">
+          <div className=" bg-[teal] p-2 font-bold flex items-center justify-between">
             <div className="flex items-center gap-5">
               <img
                 className="w-7 h-7 rounded-[50%] object-cover"
@@ -102,13 +102,13 @@ const Chat = () => {
               </span>
             </div>
           </div>
-          <div className="border-solid border-t-2 border-[#51b69d] flex items-center justify-between">
+          <div className="border-solid border-t-2 border-[teal] flex items-center justify-between">
             <textarea
               className="basis-3/4 h-full border-0 p-2"
               name=""
               id=""
             ></textarea>
-            <button className="basis-1/4 bg-[#51b69d] h-full border-0 cursor-pointer">
+            <button className="basis-1/4 bg-[teal] h-full border-0 cursor-pointer">
               Send
             </button>
           </div>

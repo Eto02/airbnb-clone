@@ -1,26 +1,33 @@
-import { FormEvent, useContext, useState } from "react";
+import React, { FormEvent, useContext, useState } from "react";
 import { AuthContext, AuthContextType } from "../context/authContext";
 import myAxios from "../lib/axiosConfig";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import UploadWidget from "../component/uploadWidget";
 
 const EditProfile: React.FC = () => {
   const { currentUser, updateUser } = useContext(
     AuthContext
   ) as AuthContextType;
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string>("");
+  const [avatar, setAvatar] = useState<string[]>([]);
 
   const nav = useNavigate();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const { username, email, password } = Object.fromEntries(formData);
+    const { username, email, password } = Object.fromEntries(formData) as {
+      username: string;
+      email: string;
+      password: string;
+    };
     try {
       const res = await myAxios.put(`/api/user/${currentUser?.id}`, {
         username,
         email,
         password,
+        avatar: avatar[0],
       });
       updateUser(res.data?.data);
       nav("/profile");
@@ -28,8 +35,9 @@ const EditProfile: React.FC = () => {
       if (axios.isAxiosError(error)) {
         let errorMessage: string = error.response?.data;
         console.log(errorMessage);
-        if (typeof errorMessage !== "string")
+        if (typeof errorMessage !== "string") {
           errorMessage = error.response?.data?.errors[0]?.message;
+        }
         setError(errorMessage);
       }
     }
@@ -69,17 +77,27 @@ const EditProfile: React.FC = () => {
               type="password"
             />
           </div>
-          <button className=" p-2 rounded border-0 bg-[teal] text-white font-bold cursor-pointer">
+          <button className="p-2 rounded border-0 bg-[teal] text-white font-bold cursor-pointer">
             Update
           </button>
-          {error && <span>error</span>}
+          {error && <span>{error}</span>}
         </form>
       </div>
       <div className="basis-2/5 bg-[#84DCC6] flex flex-col gap-5 items-center justify-center">
         <img
-          src={currentUser?.avatar || "/noavatar.jpg"}
+          src={avatar[0] || currentUser?.avatar || "/noavatar.jpg"}
           alt=""
           className="w-1/2 object-cover"
+        />
+        <UploadWidget
+          uwConfig={{
+            cloudName: "ducykopvh",
+            uploadPreset: "estate",
+            multiple: false,
+            maxImageFileSize: 2000000,
+            folder: "avatars",
+          }}
+          setState={setAvatar}
         />
       </div>
     </div>
