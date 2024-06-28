@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Dispatch,
   SetStateAction,
@@ -41,7 +42,7 @@ function UploadWidget({ uwConfig, setState }: UploadWidgetProps) {
   }, [loaded]);
 
   const initializeCloudinaryWidget = () => {
-    if (loaded && window?.cloudinary) {
+    if (loaded && window.cloudinary) {
       const myWidget = window.cloudinary.createUploadWidget(
         uwConfig,
         (error: any, result: any) => {

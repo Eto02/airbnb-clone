@@ -1,8 +1,30 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useNavigate } from "react-router-dom";
 import UploadWidget from "../component/uploadWidget";
+import axios from "axios";
+import myAxios from "../lib/axiosConfig";
+
+interface FormInputs {
+  title: FormDataEntryValue;
+  price: FormDataEntryValue;
+  address: FormDataEntryValue;
+  city: FormDataEntryValue;
+  bedroom: FormDataEntryValue;
+  bathroom: FormDataEntryValue;
+  type: FormDataEntryValue;
+  property: FormDataEntryValue;
+  latitude: FormDataEntryValue;
+  longitude: FormDataEntryValue;
+  utilities: FormDataEntryValue;
+  pet: FormDataEntryValue;
+  income: FormDataEntryValue;
+  size: FormDataEntryValue;
+  school: FormDataEntryValue;
+  bus: FormDataEntryValue;
+  restaurant: FormDataEntryValue;
+}
 
 function CreatePostPage() {
   const [value, setValue] = useState("");
@@ -11,10 +33,56 @@ function CreatePostPage() {
 
   const nav = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    const formData = new FormData(e.target);
-    const inputs = Object.fromEntries(formData);
+    const formData = new FormData(e.currentTarget);
+    const inputs = Object.fromEntries(
+      formData.entries()
+    ) as unknown as FormInputs;
+
+    const parseNumber = (value: FormDataEntryValue): number | undefined => {
+      const parsed = parseInt(value as string);
+      return isNaN(parsed) ? undefined : parsed;
+    };
+
+    try {
+      const res = await myAxios.post(`/api/post/`, {
+        data: {
+          title: inputs.title,
+          price: parseNumber(inputs.price),
+          address: inputs.address,
+          city: inputs.city,
+          bedroom: parseNumber(inputs.bedroom),
+          bathroom: parseNumber(inputs.bathroom),
+          type: inputs.type,
+          property: inputs.property,
+          latitude: inputs.latitude,
+          longitude: inputs.longitude,
+          images: images,
+        },
+        detail: {
+          desc: value,
+          utilities: inputs.utilities,
+          pet: inputs.pet,
+          income: inputs.income,
+          size: parseNumber(inputs.size),
+          school: parseNumber(inputs.school),
+          bus: parseNumber(inputs.bus),
+          restaurant: parseNumber(inputs.restaurant),
+        },
+      });
+      console.log(res.data);
+      nav("/detail/" + res.data.data.id);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        let errorMessage: string = error.response?.data;
+        console.log(errorMessage);
+        if (typeof errorMessage !== "string") {
+          errorMessage = error.response?.data?.errors[0]?.message;
+        }
+        setError(errorMessage);
+      }
+    }
   };
 
   return (
@@ -106,7 +174,7 @@ function CreatePostPage() {
             </div>
             <div className="flex w-[30%] gap-1 flex-col">
               <label htmlFor="type">Type</label>
-              <select className="p-4" name="type">
+              <select className="p-2" name="type">
                 <option value="rent" defaultChecked>
                   Rent
                 </option>
@@ -114,8 +182,8 @@ function CreatePostPage() {
               </select>
             </div>
             <div className="flex w-[30%] gap-1 flex-col">
-              <label htmlFor="type">Property</label>
-              <select className="p-4" name="property">
+              <label htmlFor="property">Property</label>
+              <select className="p-2" name="property">
                 <option value="apartment">Apartment</option>
                 <option value="house">House</option>
                 <option value="condo">Condo</option>
@@ -125,7 +193,7 @@ function CreatePostPage() {
 
             <div className="flex w-[30%] gap-1 flex-col">
               <label htmlFor="utilities">Utilities Policy</label>
-              <select className="p-4" name="utilities">
+              <select className="p-2" name="utilities">
                 <option value="owner">Owner is responsible</option>
                 <option value="tenant">Tenant is responsible</option>
                 <option value="shared">Shared</option>
@@ -133,7 +201,7 @@ function CreatePostPage() {
             </div>
             <div className="flex w-[30%] gap-1 flex-col">
               <label htmlFor="pet">Pet Policy</label>
-              <select className="p-4" name="pet">
+              <select className="p-2" name="pet">
                 <option value="allowed">Allowed</option>
                 <option value="not-allowed">Not Allowed</option>
               </select>
@@ -141,6 +209,7 @@ function CreatePostPage() {
             <div className="flex w-[30%] gap-1 flex-col">
               <label htmlFor="income">Income Policy</label>
               <input
+                className="p-2 rounded border-1 border-solid border-gray-500"
                 id="income"
                 name="income"
                 type="text"
@@ -194,7 +263,7 @@ function CreatePostPage() {
           </form>
         </div>
       </div>
-      <div className="basis-2/5 bg-[#84DCC6] flex flex-col gap-5 flex w-[30%] gap-1 flex-col-center justify-center">
+      <div className="basis-2/5 bg-[#84DCC6]  flex  gap-1 flex-col items-center justify-center">
         {images.map((image, index) => (
           <img className="w-1/2 object-cover" src={image} key={index} alt="" />
         ))}

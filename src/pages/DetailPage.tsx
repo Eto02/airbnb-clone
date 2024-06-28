@@ -17,8 +17,12 @@ import {
   faUtensils,
 } from "@fortawesome/free-solid-svg-icons";
 import Map from "../component/Map";
+import { useLoaderData } from "react-router-dom";
+import { Post } from "../lib/loaders";
 
 const DetailPage: React.FC = () => {
+  const post = useLoaderData() as Post;
+  console.log(post);
   return (
     <div className="flex flex-col lg:flex-row h-full overflow-y-scroll lg:overflow-hidden">
       <div className="basis-3/5 mt-0" id="left">

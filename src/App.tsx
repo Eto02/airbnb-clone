@@ -1,17 +1,23 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import {
+  LoaderFunction,
+  RouteObject,
+  RouterProvider,
+  createBrowserRouter,
+} from "react-router-dom";
 import "./index.css";
-import HomPage from "./pages/HomePage";
-import ListPage from "./pages/ListPage";
-import DetailPage from "./pages/DetailPage";
-import Profile from "./pages/Profile";
-import Login from "./pages/Login";
-import Register from "./pages/SignUp";
-import Layout from "./pages/Layout";
+import { detailsPageLoader } from "./lib/loaders";
 import AuthLayout from "./pages/AuthLayout";
-import ProfileUpdatePage from "./pages/EditProfile";
 import CreatePostPage from "./pages/CreatePostPage";
+import DetailPage from "./pages/DetailPage";
+import ProfileUpdatePage from "./pages/EditProfile";
+import HomPage from "./pages/HomePage";
+import Layout from "./pages/Layout";
+import ListPage from "./pages/ListPage";
+import Login from "./pages/Login";
+import Profile from "./pages/Profile";
+import Register from "./pages/SignUp";
 
-const router = createBrowserRouter([
+const routes: RouteObject[] = [
   {
     path: "/",
     element: <Layout />,
@@ -27,6 +33,7 @@ const router = createBrowserRouter([
       {
         path: "/detail/:id",
         element: <DetailPage />,
+        loader: detailsPageLoader as LoaderFunction,
       },
       {
         path: "/login",
@@ -56,7 +63,8 @@ const router = createBrowserRouter([
       },
     ],
   },
-]);
+];
+const router = createBrowserRouter(routes);
 
 function App() {
   return <RouterProvider router={router} />;
