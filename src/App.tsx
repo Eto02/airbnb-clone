@@ -5,7 +5,7 @@ import {
   createBrowserRouter,
 } from "react-router-dom";
 import "./index.css";
-import { detailsPageLoader } from "./lib/loaders";
+import { detailsPageLoader, listPageLoader } from "./lib/loaders";
 import AuthLayout from "./pages/AuthLayout";
 import CreatePostPage from "./pages/CreatePostPage";
 import DetailPage from "./pages/DetailPage";
@@ -29,6 +29,7 @@ const routes: RouteObject[] = [
       {
         path: "/list",
         element: <ListPage />,
+        loader: listPageLoader as LoaderFunction,
       },
       {
         path: "/detail/:id",

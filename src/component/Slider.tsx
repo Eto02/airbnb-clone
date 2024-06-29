@@ -66,6 +66,7 @@ const Slider: React.FC<SliderProps> = ({ images }) => {
       <div className="basis-1/4 flex flex-1 flex-col justify-between gap-5">
         {images.slice(1).map((image, index) => (
           <img
+            key={`Image ${index + 1}`}
             onClick={() => setImageIndex(index + 1)}
             className="w-full h-24  object-cover rounded-xl cursor-pointer "
             src={image}

@@ -28,17 +28,58 @@ interface TodoLoaderFunction extends Omit<LoaderFunction, "args"> {
     | any;
 }
 
-export interface Post {
+type PostDetail = {
+  id: string;
+  desc: string;
+  utilities: string;
+  pet: string;
+  income: string;
+  size: number;
+  school: number;
+  bus: number;
+  restaurant: number;
+  postId: string;
+};
+
+type User = {
+  username: string;
+  avatar: string;
+};
+
+export type Post = {
   id: string;
   title: string;
-  content: string;
-}
+  price: number;
+  images: string[];
+  address: string;
+  city: string;
+  bedroom: number;
+  bathroom: number;
+  latitude: string;
+  longitude: string;
+  type: string;
+  property: string;
+  createdAt: string;
+  userId: string;
+  postDetail: PostDetail;
+  user: User;
+};
 
 export const detailsPageLoader: TodoLoaderFunction = async ({
   params,
 }: {
   params: Params;
 }): Promise<Post> => {
-  const res = await myAxios("/api/post/" + params.id);
-  return res.data;
+  const res = await myAxios.get("/api/post/" + params.id);
+  return res.data.data;
+};
+
+export const listPageLoader: TodoLoaderFunction = async ({
+  request,
+}: {
+  request: Request;
+}): Promise<Post[]> => {
+  const query = request.url.split("?")[1];
+  const res = await myAxios.get("/api/post?" + query);
+  return res.data.data;
 };

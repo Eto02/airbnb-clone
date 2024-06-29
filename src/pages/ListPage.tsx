@@ -1,11 +1,12 @@
 import React from "react";
 import Card from "../component/Card";
 import Filter from "../component/Filter";
-import { DummyData, listData } from "../lib/dumy_data";
 import Map from "../component/Map";
+import { Post } from "../lib/loaders";
+import { useLoaderData } from "react-router-dom";
 
 const ListPage: React.FC = () => {
-  const data: DummyData[] = listData;
+  const data = useLoaderData() as Post[];
 
   return (
     <div className="flex h-full">

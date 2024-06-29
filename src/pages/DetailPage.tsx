@@ -1,7 +1,3 @@
-import React from "react";
-import Slider from "../component/Slider";
-import { singlePostData, userData } from "../lib/dumy_data";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBath,
   faBed,
@@ -16,42 +12,48 @@ import {
   faShieldDog,
   faUtensils,
 } from "@fortawesome/free-solid-svg-icons";
-import Map from "../component/Map";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import DOMPurify from "dompurify";
+import React from "react";
 import { useLoaderData } from "react-router-dom";
+import Map from "../component/Map";
+import Slider from "../component/Slider";
 import { Post } from "../lib/loaders";
 
 const DetailPage: React.FC = () => {
   const post = useLoaderData() as Post;
-  console.log(post);
   return (
     <div className="flex flex-col lg:flex-row h-full overflow-y-scroll lg:overflow-hidden">
       <div className="basis-3/5 mt-0" id="left">
         <div className="pr-0 md:pr-6 lg:pr-12">
-          <Slider images={singlePostData.images} />
+          <Slider images={post.images} />
           <div className="mt-12" id="info">
             <div className=" flex justify-between">
               <div className=" flex flex-col gap-5" id="post">
-                <h1>{singlePostData.title}</h1>
+                <h1>{post.title}</h1>
                 <div className="flex gap-1 items-center text-[#888] text-sm">
                   <FontAwesomeIcon size="xs" icon={faLocationDot} />
-                  <span>{singlePostData.address}</span>
+                  <span>{post.address}</span>
                 </div>
                 <div className="text-xl font-light p-1 rounded gap-1 bg-[#84DCC6]/50 max-w-fit ">
-                  $ {singlePostData.price}
+                  $ {post.price}
                 </div>
               </div>
               <div className="flex flex-col items-center justify-center gap-5 py- px-12 font-semibold  bg-[#84DCC6]/50">
                 <img
-                  src={userData.img}
+                  src={post.user.avatar}
                   alt=""
                   className="h-12 w-12 rounded-[50%] object-cover"
                 />
-                <span>{userData.name}</span>
+                <span>{post.user.username}</span>
               </div>
             </div>
-            <div className="my-10 text-[#666]">
-              {singlePostData.description}
-            </div>
+            <div
+              className="my-10 text-[#666]"
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(post.postDetail.desc),
+              }}
+            />
           </div>
         </div>
       </div>
@@ -66,7 +68,11 @@ const DetailPage: React.FC = () => {
               />
               <div>
                 <span className="text-sm font-bold">Utilities</span>
-                <p className="text-xs">Renter is responsible</p>
+                {post.postDetail.utilities == "owner" ? (
+                  <p className="text-xs">Owner is responsible</p>
+                ) : (
+                  <p className="text-xs">Tenant is responsible</p>
+                )}
               </div>
             </div>
             <div className="flex items-center gap-[10px]">
@@ -76,7 +82,11 @@ const DetailPage: React.FC = () => {
               />
               <div>
                 <span className="text-sm font-bold">Pet Policy</span>
-                <p className="text-xs">Pets Allowed</p>
+                {post.postDetail.pet == "allowed" ? (
+                  <p className="text-xs">Pets Allowed</p>
+                ) : (
+                  <p className="text-xs">Pets not Allowed</p>
+                )}
               </div>
             </div>
             <div className="flex items-center gap-[10px]">
@@ -85,10 +95,8 @@ const DetailPage: React.FC = () => {
                 icon={faBuilding}
               />
               <div>
-                <span className="text-sm font-bold">Property Fees</span>
-                <p className="text-xs">
-                  Must have 3x the rent in totla household income
-                </p>
+                <span className="text-sm font-bold">Income Policy</span>
+                <p className="text-xs">{post.postDetail.income}</p>
               </div>
             </div>
           </div>
@@ -96,15 +104,15 @@ const DetailPage: React.FC = () => {
           <div className="flex justify-between">
             <div className="flex items-center gap-2 rounded-lg p-2 bg-white">
               <FontAwesomeIcon icon={faExpand} />
-              <span className="text-sm">80sqm</span>
+              <span className="text-sm">{post.postDetail.size}sqft</span>
             </div>
             <div className="flex items-center gap-2 rounded-lg p-2 bg-white">
               <FontAwesomeIcon icon={faBed} />
-              <span className="text-sm">2 bed</span>
+              <span className="text-sm">{post.bedroom} beds</span>
             </div>
             <div className="flex items-center gap-2 rounded-lg p-2 bg-white">
               <FontAwesomeIcon icon={faBath} />
-              <span className="text-sm">1 bedroom</span>
+              <span className="text-sm">{post.bathroom} bathroom</span>
             </div>
           </div>
           <p className="font-bold text-lg">Nearby Places</p>
@@ -116,14 +124,14 @@ const DetailPage: React.FC = () => {
               />
               <div>
                 <span className="text-sm font-bold">School</span>
-                <p className="text-xs">250m away</p>
+                <p className="text-xs">{post.postDetail.school}sqft</p>
               </div>
             </div>
             <div className="flex items-center gap-[10px]">
               <FontAwesomeIcon className="w-6 h-6  text-[#888]" icon={faBus} />
               <div>
                 <span className="text-sm font-bold">Bus Stop</span>
-                <p className="text-xs">100m away</p>
+                <p className="text-xs">{post.postDetail.bus}m</p>
               </div>
             </div>
             <div className="flex items-center gap-[10px]">
@@ -133,13 +141,13 @@ const DetailPage: React.FC = () => {
               />
               <div>
                 <span className="text-sm font-bold">Restourant</span>
-                <p className="text-xs">200m away</p>
+                <p className="text-xs">{post.postDetail.restaurant}m</p>
               </div>
             </div>
           </div>
           <p className="font-bold text-lg">Location</p>
           <div className="w-full h-[180px]">
-            <Map items={[singlePostData]} />
+            <Map items={[post]} />
           </div>
           <div className="flex justify-between">
             <button className=" p-3 flex items-center gap-1 border border-solid border-[#84DCC6] rounded cursor-pointer">

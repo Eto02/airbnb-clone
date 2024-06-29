@@ -1,17 +1,21 @@
 import "leaflet/dist/leaflet.css";
 import React from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
-import { DummyData } from "../lib/dumy_data";
+import { Post } from "../lib/loaders";
 import Pin from "./Pin";
 
 interface MapProps {
-  items: DummyData[];
+  items: Post[];
 }
 
 const Map: React.FC<MapProps> = ({ items }) => {
   return (
     <MapContainer
-      center={[51.505, -0.09]}
+      center={
+        items.length === 1
+          ? [parseFloat(items[0].latitude), parseFloat(items[0].longitude)]
+          : [51.505, -0.09]
+      }
       zoom={7}
       scrollWheelZoom={false}
       className="w-full h-full rounded-3xl"
@@ -20,7 +24,7 @@ const Map: React.FC<MapProps> = ({ items }) => {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {items.map((item: DummyData) => (
+      {items.map((item: Post) => (
         <Pin key={item.id} item={item} />
       ))}
     </MapContainer>

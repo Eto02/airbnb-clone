@@ -1,7 +1,3 @@
-import { Link } from "react-router-dom";
-import { DummyData } from "../lib/dumy_data";
-import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBath,
   faBed,
@@ -9,20 +5,24 @@ import {
   faComment,
   faLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React from "react";
+import { Link } from "react-router-dom";
+import { Post } from "../lib/loaders";
 
 interface CardProps {
-  item: DummyData;
+  item: Post;
 }
 const Card: React.FC<CardProps> = ({ item }) => {
   return (
     <div className="flex gap-5 w-full">
       <Link
-        to={`/${item.id}`}
+        to={`/detail/${item.id}`}
         className="basis-2/5 h-52 hidden md:block"
         id="left"
       >
         <img
-          src={item.img}
+          src={item.images[0]}
           alt={item.title}
           className=" h-full w-full object-cover rounded-lg"
         />
@@ -34,7 +34,7 @@ const Card: React.FC<CardProps> = ({ item }) => {
         <h2>
           <Link
             className="text-xl font-semibold text-[#444] transition-all durtion-[0.4s] ease-in-out hover:text-black hover:scale-[1.01]"
-            to={`/${item.id}`}
+            to={`/detail/${item.id}`}
           >
             {item.title}
           </Link>
@@ -56,7 +56,7 @@ const Card: React.FC<CardProps> = ({ item }) => {
             <div className="flex items-center gap-1 bg-[whitesmoke] rounded-md">
               <FontAwesomeIcon size="xs" icon={faBath} />
 
-              <span>{item.bedroom} bathroom</span>
+              <span>{item.bathroom} bathroom</span>
             </div>
           </div>
           <div className="flex gap-5">
