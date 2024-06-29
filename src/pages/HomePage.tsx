@@ -1,10 +1,7 @@
-import React, { useContext } from "react";
+import React from "react";
 import SearchBar from "../component/SearchBar";
-import { AuthContext, AuthContextType } from "../context/authContext";
 
 const HomPage: React.FC = () => {
-  const { currentUser } = useContext(AuthContext) as AuthContextType;
-  console.log(currentUser);
   return (
     <div className="flex h-full ">
       <div className="lg:basis-3/5">

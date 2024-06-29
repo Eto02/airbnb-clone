@@ -22,7 +22,7 @@ const Card: React.FC<CardProps> = ({ item }) => {
         id="left"
       >
         <img
-          src={item.images[0]}
+          src={item.images.length > 0 ? item.images[0] : ""}
           alt={item.title}
           className=" h-full w-full object-cover rounded-lg"
         />

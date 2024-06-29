@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { defer } from "react-router-dom";
 import myAxios from "./axiosConfig";
+import { DeferredData } from "@remix-run/router/dist/utils";
 export declare type Params<Key extends string = string> = {
   readonly [key in Key]: string | undefined;
 };
@@ -64,6 +66,9 @@ export type Post = {
   postDetail: PostDetail;
   user: User;
 };
+export type LoaderData = {
+  postResponse: Promise<Post[]>;
+};
 
 export const detailsPageLoader: TodoLoaderFunction = async ({
   params,
@@ -78,8 +83,10 @@ export const listPageLoader: TodoLoaderFunction = async ({
   request,
 }: {
   request: Request;
-}): Promise<Post[]> => {
+}): Promise<DeferredData> => {
   const query = request.url.split("?")[1];
-  const res = await myAxios.get("/api/post?" + query);
-  return res.data.data;
+  const postPromise = myAxios.get("/api/post?" + query);
+  return defer({
+    postResponse: postPromise,
+  });
 };
