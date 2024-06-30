@@ -1,11 +1,13 @@
-import { DummyData, listData } from "../lib/dumy_data";
+import { Post } from "../lib/loaders";
 import Card from "./Card";
+interface ListProps {
+  items: Post[];
+}
 
-const List = () => {
-  const data: DummyData[] = listData;
+const List: React.FC<ListProps> = ({ items }) => {
   return (
     <div className="flex flex-col gap-12">
-      {data.map((item) => (
+      {items.map((item) => (
         <Card key={item.id} item={item} />
       ))}
     </div>

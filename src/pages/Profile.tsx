@@ -1,17 +1,19 @@
-import React, { useContext } from "react";
+import React, { Suspense, useContext } from "react";
 import Chat from "../component/Chat";
 import List from "../component/List";
-import { useNavigate } from "react-router-dom";
+import { Await, useLoaderData, useNavigate } from "react-router-dom";
 import myAxios from "../lib/axiosConfig";
 import { AuthContext, AuthContextType } from "../context/authContext";
 import { Link } from "react-router-dom";
+import { LoaderData } from "../lib/loaders";
 
 const Profile: React.FC = () => {
   const nav = useNavigate();
   const { currentUser, updateUser } = useContext(
     AuthContext
   ) as AuthContextType;
-
+  const data = useLoaderData() as LoaderData;
+  console.log(data);
   const handleLoogout = async (): Promise<void> => {
     try {
       await myAxios.post("/api/auth/logout");
@@ -67,9 +69,27 @@ const Profile: React.FC = () => {
               </button>
             </Link>
           </div>
-          <List />
+          <Suspense fallback={<p>Loading...</p>}>
+            <Await
+              resolve={data.postResponse}
+              errorElement={<p>Error loading package location!</p>}
+            >
+              {(postResponse) => <List items={postResponse.data.data.post} />}
+            </Await>
+          </Suspense>
+
           <div>
             <h1 className="font-light">Saved List</h1>
+            <Suspense fallback={<p>Loading...</p>}>
+              <Await
+                resolve={data.postResponse}
+                errorElement={<p>Error loading package location!</p>}
+              >
+                {(postResponse) => (
+                  <List items={postResponse.data.data.savedPost} />
+                )}
+              </Await>
+            </Suspense>
           </div>
         </div>
       </div>

@@ -14,14 +14,32 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DOMPurify from "dompurify";
-import React from "react";
-import { useLoaderData } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { redirect, useLoaderData } from "react-router-dom";
 import Map from "../component/Map";
 import Slider from "../component/Slider";
 import { Post } from "../lib/loaders";
+import { AuthContext, AuthContextType } from "../context/authContext";
+import myAxios from "../lib/axiosConfig";
 
 const DetailPage: React.FC = () => {
   const post = useLoaderData() as Post;
+  const [saved, setSaved] = useState(post.isSaved);
+  const { currentUser } = useContext(AuthContext) as AuthContextType;
+
+  const handleSave = async (): Promise<void> => {
+    setSaved((prev) => !prev);
+    if (!currentUser) {
+      redirect("/login");
+    }
+    try {
+      await myAxios.post("/api/user/save", { postId: post.id });
+    } catch (error) {
+      console.log(error);
+      setSaved((prev) => !prev);
+    }
+  };
+
   return (
     <div className="flex flex-col lg:flex-row h-full overflow-y-scroll lg:overflow-hidden">
       <div className="basis-3/5 mt-0" id="left">
@@ -154,9 +172,13 @@ const DetailPage: React.FC = () => {
               <FontAwesomeIcon className="w-4 h-4" icon={faComment} /> Send a
               message
             </button>
-            <button className=" p-3 flex items-center gap-1 border border-solid border-[#84DCC6] rounded cursor-pointer">
+            <button
+              onClick={handleSave}
+              className=" p-3 flex items-center gap-1 border border-solid border-[#84DCC6] rounded cursor-pointer"
+              style={{ backgroundColor: saved ? "teal" : "white" }}
+            >
               <FontAwesomeIcon className="w-4 h-4" icon={faBookmark} />
-              Send a message
+              {saved ? "Place saved" : "Save the place"}
             </button>
           </div>
         </div>

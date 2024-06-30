@@ -5,7 +5,11 @@ import {
   createBrowserRouter,
 } from "react-router-dom";
 import "./index.css";
-import { detailsPageLoader, listPageLoader } from "./lib/loaders";
+import {
+  detailsPageLoader,
+  listPageLoader,
+  profilePageLoader,
+} from "./lib/loaders";
 import AuthLayout from "./pages/AuthLayout";
 import CreatePostPage from "./pages/CreatePostPage";
 import DetailPage from "./pages/DetailPage";
@@ -53,6 +57,7 @@ const routes: RouteObject[] = [
       {
         path: "/profile",
         element: <Profile />,
+        loader: profilePageLoader as LoaderFunction,
       },
       {
         path: "/profile/update",

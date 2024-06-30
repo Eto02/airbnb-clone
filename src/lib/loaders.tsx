@@ -65,6 +65,7 @@ export type Post = {
   userId: string;
   postDetail: PostDetail;
   user: User;
+  isSaved: boolean;
 };
 export type LoaderData = {
   postResponse: Promise<Post[]>;
@@ -90,3 +91,11 @@ export const listPageLoader: TodoLoaderFunction = async ({
     postResponse: postPromise,
   });
 };
+
+export const profilePageLoader: TodoLoaderFunction =
+  async (): Promise<DeferredData> => {
+    const postPromise = myAxios.get("/api/user/post");
+    return defer({
+      postResponse: postPromise,
+    });
+  };
