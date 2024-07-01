@@ -67,8 +67,28 @@ export type Post = {
   user: User;
   isSaved: boolean;
 };
-export type LoaderData = {
+
+export type ChatUser = {
+  id: string;
+  username: string;
+  avatar: string | null;
+};
+
+export type Chat = {
+  id: string;
+  userIDs: string[];
+  createdAt: string;
+  seenBy: string[];
+  lastMessage: string;
+  receiver: ChatUser;
+};
+
+export type LoaderPostData = {
   postResponse: Promise<Post[]>;
+};
+export type LoaderPostChatData = {
+  postResponse: Promise<Post[]>;
+  chatResponse: Promise<Chat>;
 };
 
 export const detailsPageLoader: TodoLoaderFunction = async ({
@@ -95,7 +115,9 @@ export const listPageLoader: TodoLoaderFunction = async ({
 export const profilePageLoader: TodoLoaderFunction =
   async (): Promise<DeferredData> => {
     const postPromise = myAxios.get("/api/user/post");
+    const chatPromise = myAxios.get("/api/chat");
     return defer({
       postResponse: postPromise,
+      chatResponse: chatPromise,
     });
   };

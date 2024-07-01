@@ -2,11 +2,11 @@ import React, { Suspense } from "react";
 import { Await, useLoaderData } from "react-router-dom";
 import Card from "../component/Card";
 import Filter from "../component/Filter";
-import { LoaderData, Post } from "../lib/loaders";
 import Map from "../component/Map";
+import { LoaderPostData, Post } from "../lib/loaders";
 
 const ListPage: React.FC = () => {
-  const data = useLoaderData() as LoaderData;
+  const data = useLoaderData() as LoaderPostData;
   return (
     <div className="flex h-full">
       <div className="basis-3/5 ">

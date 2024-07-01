@@ -1,18 +1,17 @@
 import React, { Suspense, useContext } from "react";
+import { Await, Link, useLoaderData, useNavigate } from "react-router-dom";
 import Chat from "../component/Chat";
 import List from "../component/List";
-import { Await, useLoaderData, useNavigate } from "react-router-dom";
-import myAxios from "../lib/axiosConfig";
 import { AuthContext, AuthContextType } from "../context/authContext";
-import { Link } from "react-router-dom";
-import { LoaderData } from "../lib/loaders";
+import myAxios from "../lib/axiosConfig";
+import { LoaderPostChatData } from "../lib/loaders";
 
 const Profile: React.FC = () => {
   const nav = useNavigate();
   const { currentUser, updateUser } = useContext(
     AuthContext
   ) as AuthContextType;
-  const data = useLoaderData() as LoaderData;
+  const data = useLoaderData() as LoaderPostChatData;
   console.log(data);
   const handleLoogout = async (): Promise<void> => {
     try {
@@ -95,7 +94,14 @@ const Profile: React.FC = () => {
       </div>
       <div className="basis-2/5 h-full flex-none bg-[#84DCC6]" id="right">
         <div className="px-5 h-full">
-          <Chat />
+          <Suspense fallback={<p>Loading...</p>}>
+            <Await
+              resolve={data.chatResponse}
+              errorElement={<p>Error loading chats!</p>}
+            >
+              {(chatResponse) => <Chat chats={chatResponse.data.data} />}
+            </Await>
+          </Suspense>
         </div>
       </div>
     </div>
