@@ -74,6 +74,14 @@ export type ChatUser = {
   avatar: string | null;
 };
 
+export type Message = {
+  id: string;
+  text: string;
+  userId: string;
+  chatId: string;
+  createdAt: string;
+};
+
 export type Chat = {
   id: string;
   userIDs: string[];
@@ -81,6 +89,7 @@ export type Chat = {
   seenBy: string[];
   lastMessage: string;
   receiver: ChatUser;
+  messages: Message[];
 };
 
 export type LoaderPostData = {

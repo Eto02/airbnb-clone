@@ -1,9 +1,47 @@
-import { useState } from "react";
-import { Chat as ChatType } from "../lib/loaders";
+import { FormEvent, useContext, useState } from "react";
+import { Chat as ChatType, ChatUser } from "../lib/loaders";
+import { AuthContext, AuthContextType } from "../context/authContext";
+import myAxios from "../lib/axiosConfig";
+import { format } from "timeago.js";
+import { SocketContext, SocketContextType } from "../context/SocketContext";
 
 const Chat = ({ chats }: { chats: ChatType[] }) => {
-  console.log(chats);
-  const [chat, setChat] = useState(true);
+  const [chat, setChat] = useState<ChatType | null>(null);
+  const { currentUser } = useContext(AuthContext) as AuthContextType;
+  const { socket } = useContext(SocketContext) as SocketContextType;
+  const handleOpenChat = async (id: string, receiver: ChatUser) => {
+    try {
+      const res = await myAxios.get("/api/chat/" + id);
+      setChat({ ...res.data.data, receiver });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
+    e.preventDefault();
+    const form = e.currentTarget as HTMLFormElement;
+    const formData = new FormData(form);
+    const text: string = formData.get("text") as string;
+    console.log(text);
+    if (!text) return;
+    try {
+      const res = await myAxios.post("/api/message/" + chat?.id, { text });
+
+      setChat((prev) =>
+        prev
+          ? {
+              ...prev,
+              messages: [...prev.messages, res.data.data],
+            }
+          : null
+      );
+      console.log(chat);
+      form.reset();
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="flex h-full flex-col">
       <div className="flex-1 flex flex-col  gap-5  overflow-y-scroll ">
@@ -11,7 +49,13 @@ const Chat = ({ chats }: { chats: ChatType[] }) => {
         {chats.map((c) => (
           <div
             key={c.id}
+            style={{
+              backgroundColor: c.seenBy.includes(currentUser?.id || "")
+                ? "white"
+                : "teal",
+            }}
             className="bg-white p-3 mr-1 rounded-lg flex items-center gap-5 cursor-pointer"
+            onClick={() => handleOpenChat(c.id, c.receiver)}
           >
             <img
               className="w-10 h-10 rounded-[50%] object-cover"
@@ -29,51 +73,49 @@ const Chat = ({ chats }: { chats: ChatType[] }) => {
             <div className="flex items-center gap-5">
               <img
                 className="w-7 h-7 rounded-[50%] object-cover"
-                src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                src={chat.receiver.avatar || "noavatar.jpg"}
                 alt="avatar"
               />
-              John Doe
+              {chat.receiver.username}
             </div>
-            <span onClick={() => setChat(false)} className="cursor-pointer">
+            <span onClick={() => setChat(null)} className="cursor-pointer">
               X
             </span>
           </div>
           <div className="h-[225px] overflow-y-scroll p-4 flex flex-col gap-5">
-            <div className="w-1/2">
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-              <span className="text-xs bg-[#84DCC6]/50 p-[2px]">
-                5 hour ago
-              </span>
-            </div>
-            <div className="w-1/2 self-end text-right">
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-              <span className="text-xs bg-[#84DCC6]/50 p-[2px]">
-                5 hour ago
-              </span>
-            </div>
-            <div className="w-1/2">
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-              <span className="text-xs bg-[#84DCC6]/50 p-[2px]">
-                5 hour ago
-              </span>
-            </div>
-            <div className="w-1/2 self-end text-right">
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-              <span className="text-xs bg-[#84DCC6]/50 p-[2px]">
-                5 hour ago
-              </span>
-            </div>
+            {chat.messages.map((message) => (
+              <div
+                key={message.id}
+                className="w-1/2"
+                style={{
+                  alignSelf:
+                    message.userId === currentUser?.id
+                      ? "flex-end"
+                      : "flex-start",
+                  textAlign:
+                    message.userId === currentUser?.id ? "right" : "left",
+                }}
+              >
+                <p>{message.text}</p>
+                <span className="text-xs bg-[#84DCC6]/50 p-[2px]">
+                  {format(message.createdAt)}
+                </span>
+              </div>
+            ))}
           </div>
-          <div className="border-solid border-t-2 border-[teal] flex items-center justify-between">
+          <form
+            onSubmit={handleSubmit}
+            className="border-solid border-t-2 border-[teal] flex items-center justify-between"
+          >
             <textarea
               className="basis-3/4 h-full border-0 p-2"
-              name=""
-              id=""
+              name="text"
+              id="text"
             ></textarea>
             <button className="basis-1/4 bg-[teal] h-full border-0 cursor-pointer">
               Send
             </button>
-          </div>
+          </form>
         </div>
       )}
     </div>
