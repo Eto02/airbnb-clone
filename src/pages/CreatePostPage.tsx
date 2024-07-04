@@ -71,12 +71,10 @@ function CreatePostPage() {
           restaurant: parseNumber(inputs.restaurant),
         },
       });
-      console.log(res.data);
       nav("/detail/" + res.data.data.id);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         let errorMessage: string = error.response?.data;
-        console.log(errorMessage);
         if (typeof errorMessage !== "string") {
           errorMessage = error.response?.data?.errors[0]?.message;
         }

@@ -3,11 +3,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext, AuthContextType } from "../context/authContext";
+import useNotifStore from "../lib/notificationStore";
 
 const Navbar: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
   const { currentUser } = useContext(AuthContext) as AuthContextType;
 
+  const fetch = useNotifStore((state) => state.fetch);
+  const number = useNotifStore((state) => state.number);
+  fetch();
   return (
     <nav className="flex justify-between items-center h-[100px]">
       <div className="basis-3/5 flex items-center gap-[50px]">
@@ -58,9 +62,11 @@ const Navbar: React.FC = () => {
               className="hidden md:block py-3 px-6  bg-[#FFFFFF] cursor-pointer border-0 m-5 relative"
               to="/profile"
             >
-              <div className="top-[-8px] right-[-8px] absolute bg-red-600 text-white rounded-[50%] h-6 w-6 flex items-center justify-center">
-                3
-              </div>
+              {number > 0 && (
+                <div className="top-[-8px] right-[-8px] absolute bg-red-600 text-white rounded-[50%] h-6 w-6 flex items-center justify-center">
+                  {number}
+                </div>
+              )}
               <span>Profile</span>
             </Link>
           </div>

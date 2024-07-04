@@ -47,7 +47,6 @@ function UploadWidget({ uwConfig, setState }: UploadWidgetProps) {
         uwConfig,
         (error: any, result: any) => {
           if (!error && result && result.event === "success") {
-            console.log("Done! Here is the image info: ", result.info);
             setState((prev) => [...prev, result.info.secure_url]);
           }
         }

@@ -12,7 +12,6 @@ const Profile: React.FC = () => {
     AuthContext
   ) as AuthContextType;
   const data = useLoaderData() as LoaderPostChatData;
-  console.log(data);
   const handleLoogout = async (): Promise<void> => {
     try {
       await myAxios.post("/api/auth/logout");

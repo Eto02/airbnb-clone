@@ -1,5 +1,5 @@
-import { FormEvent, useContext, useState } from "react";
-import { Chat as ChatType, ChatUser } from "../lib/loaders";
+import { FormEvent, useContext, useEffect, useRef, useState } from "react";
+import { Chat as ChatType, ChatUser, Message } from "../lib/loaders";
 import { AuthContext, AuthContextType } from "../context/authContext";
 import myAxios from "../lib/axiosConfig";
 import { format } from "timeago.js";
@@ -9,6 +9,13 @@ const Chat = ({ chats }: { chats: ChatType[] }) => {
   const [chat, setChat] = useState<ChatType | null>(null);
   const { currentUser } = useContext(AuthContext) as AuthContextType;
   const { socket } = useContext(SocketContext) as SocketContextType;
+
+  const messageEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chat]);
+
   const handleOpenChat = async (id: string, receiver: ChatUser) => {
     try {
       const res = await myAxios.get("/api/chat/" + id);
@@ -23,7 +30,6 @@ const Chat = ({ chats }: { chats: ChatType[] }) => {
     const form = e.currentTarget as HTMLFormElement;
     const formData = new FormData(form);
     const text: string = formData.get("text") as string;
-    console.log(text);
     if (!text) return;
     try {
       const res = await myAxios.post("/api/message/" + chat?.id, { text });
@@ -36,12 +42,47 @@ const Chat = ({ chats }: { chats: ChatType[] }) => {
             }
           : null
       );
-      console.log(chat);
       form.reset();
+      socket?.emit("sendMessage", {
+        reciverId: chat?.receiver.id,
+        data: res.data.data,
+      });
     } catch (error) {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    const read = async () => {
+      try {
+        await myAxios.put("/api/chat/" + chat?.id);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if (chat && socket) {
+      const handleMessage = (data: Message) => {
+        if (chat.id === data.chatId) {
+          setChat((prev) =>
+            prev
+              ? {
+                  ...prev,
+                  messages: [...prev.messages, data],
+                }
+              : null
+          );
+          read();
+        }
+      };
+
+      socket.on("getMessage", handleMessage);
+
+      return () => {
+        socket.off("getMessage", handleMessage);
+      };
+    }
+  }, [socket, chat]);
+
   return (
     <div className="flex h-full flex-col">
       <div className="flex-1 flex flex-col  gap-5  overflow-y-scroll ">
@@ -50,9 +91,10 @@ const Chat = ({ chats }: { chats: ChatType[] }) => {
           <div
             key={c.id}
             style={{
-              backgroundColor: c.seenBy.includes(currentUser?.id || "")
-                ? "white"
-                : "teal",
+              backgroundColor:
+                c.seenBy.includes(currentUser?.id || "") || chat?.id === c.id
+                  ? "white"
+                  : "teal",
             }}
             className="bg-white p-3 mr-1 rounded-lg flex items-center gap-5 cursor-pointer"
             onClick={() => handleOpenChat(c.id, c.receiver)}
@@ -102,6 +144,7 @@ const Chat = ({ chats }: { chats: ChatType[] }) => {
                 </span>
               </div>
             ))}
+            <div ref={messageEndRef}></div>
           </div>
           <form
             onSubmit={handleSubmit}

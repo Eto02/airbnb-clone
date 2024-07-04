@@ -34,7 +34,6 @@ const EditProfile: React.FC = () => {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         let errorMessage: string = error.response?.data;
-        console.log(errorMessage);
         if (typeof errorMessage !== "string") {
           errorMessage = error.response?.data?.errors[0]?.message;
         }

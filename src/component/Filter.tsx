@@ -29,7 +29,6 @@ const Filter: React.FC = () => {
   };
 
   const handleFilter = (): void => {
-    console.log(query);
     setSearchParams(query as Record<string, string>);
   };
 
