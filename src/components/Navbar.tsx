@@ -11,7 +11,7 @@ const Navbar: React.FC = () => {
 
   const fetch = useNotifStore((state) => state.fetch);
   const number = useNotifStore((state) => state.number);
-  fetch();
+  if (currentUser) fetch();
   return (
     <nav className="flex justify-between items-center h-[100px]">
       <div className="basis-3/5 flex items-center gap-[50px]">

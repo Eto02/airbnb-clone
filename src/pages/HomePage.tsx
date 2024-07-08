@@ -1,5 +1,6 @@
 import React from "react";
-import SearchBar from "../component/SearchBar";
+import SearchBar from "../components/SearchBar";
+import { Badge } from "@/components/ui/badge";
 
 const HomPage: React.FC = () => {
   return (
@@ -13,7 +14,7 @@ const HomPage: React.FC = () => {
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo rem
             minus inventore enim tempore fugiat quia iure repellendus
             necessitatibus dolor, magnam dignissimos magni blanditiis, doloribus
-            repellat consequuntur sequi vel! Beatae.
+            repellat consequuntur sequi vel! Beatae. <Badge>Badge</Badge>
           </p>
           <SearchBar />
           <div className="hidden lg:flex justify-between ">

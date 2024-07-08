@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import Navbar from "../component/Navbar";
+import Navbar from "../components/Navbar";
 import { AuthContext, AuthContextType } from "../context/authContext";
 
 const AuthLayout: React.FC = () => {

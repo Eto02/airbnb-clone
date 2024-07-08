@@ -1,8 +1,8 @@
 import React, { Suspense } from "react";
 import { Await, useLoaderData } from "react-router-dom";
-import Card from "../component/Card";
-import Filter from "../component/Filter";
-import Map from "../component/Map";
+import Card from "../components/Card";
+import Filter from "../components/Filter";
+import Map from "../components/Map";
 import { LoaderPostData, Post } from "../lib/loaders";
 
 const ListPage: React.FC = () => {

@@ -37,7 +37,7 @@ const SearchBar: React.FC = () => {
           <button
             className={`${
               query.type == type ? "bg-black text-white " : "bg-white"
-            } px-[36px] py-[16px] border-1 border-solid border-b-0  border-[#999] cursor-pointer capitalize first:rounded-tl-[5px] first:border-r-0 last:rounded-tr-[5px] last:border-l-0  `}
+            } px-[36px] py-[16px] border-border border-solid border-b-0  border-[#999] cursor-pointer capitalize first:rounded-tl-[5px] first:border-r-0 last:rounded-tr-[5px] last:border-l-0  `}
             key={type}
             onClick={() => switchType(type)}
           >

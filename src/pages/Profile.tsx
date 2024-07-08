@@ -1,7 +1,7 @@
 import React, { Suspense, useContext } from "react";
 import { Await, Link, useLoaderData, useNavigate } from "react-router-dom";
-import Chat from "../component/Chat";
-import List from "../component/List";
+import Chat from "../components/Chat";
+import List from "../components/List";
 import { AuthContext, AuthContextType } from "../context/authContext";
 import myAxios from "../lib/axiosConfig";
 import { LoaderPostChatData } from "../lib/loaders";

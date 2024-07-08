@@ -3,7 +3,7 @@ import { AuthContext, AuthContextType } from "../context/authContext";
 import myAxios from "../lib/axiosConfig";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import UploadWidget from "../component/uploadWidget";
+import UploadWidget from "../components/uploadWidget";
 
 const EditProfile: React.FC = () => {
   const { currentUser, updateUser } = useContext(

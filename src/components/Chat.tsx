@@ -4,6 +4,7 @@ import { AuthContext, AuthContextType } from "../context/authContext";
 import myAxios from "../lib/axiosConfig";
 import { format } from "timeago.js";
 import { SocketContext, SocketContextType } from "../context/SocketContext";
+import useNotifStore from "../lib/notificationStore";
 
 const Chat = ({ chats }: { chats: ChatType[] }) => {
   const [chat, setChat] = useState<ChatType | null>(null);
@@ -11,6 +12,7 @@ const Chat = ({ chats }: { chats: ChatType[] }) => {
   const { socket } = useContext(SocketContext) as SocketContextType;
 
   const messageEndRef = useRef<HTMLDivElement>(null);
+  const decrease = useNotifStore((state) => state.decrease);
 
   useEffect(() => {
     messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -19,6 +21,9 @@ const Chat = ({ chats }: { chats: ChatType[] }) => {
   const handleOpenChat = async (id: string, receiver: ChatUser) => {
     try {
       const res = await myAxios.get("/api/chat/" + id);
+      if (!res.data.data.seenBy.includes(currentUser?.id || "")) {
+        decrease();
+      }
       setChat({ ...res.data.data, receiver });
     } catch (error) {
       console.log(error);
@@ -91,10 +96,9 @@ const Chat = ({ chats }: { chats: ChatType[] }) => {
           <div
             key={c.id}
             style={{
-              backgroundColor:
-                c.seenBy.includes(currentUser?.id || "") || chat?.id === c.id
-                  ? "white"
-                  : "teal",
+              backgroundColor: c.seenBy.includes(currentUser?.id || "")
+                ? "white"
+                : "teal",
             }}
             className="bg-white p-3 mr-1 rounded-lg flex items-center gap-5 cursor-pointer"
             onClick={() => handleOpenChat(c.id, c.receiver)}

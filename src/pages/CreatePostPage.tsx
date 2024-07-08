@@ -2,7 +2,7 @@ import { FormEvent, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useNavigate } from "react-router-dom";
-import UploadWidget from "../component/uploadWidget";
+import UploadWidget from "../components/uploadWidget";
 import axios from "axios";
 import myAxios from "../lib/axiosConfig";
 
