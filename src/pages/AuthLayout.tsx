@@ -11,7 +11,7 @@ const AuthLayout: React.FC = () => {
   ) : (
     <div className=" xl:bg-[#fff]  md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl  h-screen   mx-auto px-5">
       <Navbar />
-      <div style={{ height: "calc(100vh - 100px)" }}>
+      <div style={{ height: "calc(100vh - 100px)", marginTop: "75px" }}>
         <Outlet />
       </div>
     </div>

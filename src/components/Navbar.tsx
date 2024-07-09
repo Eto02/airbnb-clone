@@ -1,141 +1,194 @@
-import { faBars, faPaw } from "@fortawesome/free-solid-svg-icons";
+import myAxios from "@/lib/axiosConfig";
+import { faPaw } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext, AuthContextType } from "../context/authContext";
 import useNotifStore from "../lib/notificationStore";
 
 const Navbar: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
-  const { currentUser } = useContext(AuthContext) as AuthContextType;
+  const [avatarOpen, setAvatarOpen] = useState<boolean>(false);
+  const { currentUser, updateUser } = useContext(
+    AuthContext
+  ) as AuthContextType;
+  const nav = useNavigate();
 
   const fetch = useNotifStore((state) => state.fetch);
   const number = useNotifStore((state) => state.number);
   if (currentUser) fetch();
+  const handleLoogout = async (): Promise<void> => {
+    try {
+      await myAxios.post("/api/auth/logout");
+      updateUser(null);
+      nav("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
-    <nav className="flex justify-between items-center h-[100px]">
-      <div className="basis-3/5 flex items-center gap-[50px]">
-        <a
-          href="/"
-          className=" transform hover:scale-105 transition-all duration-400 ease-in font-bold text-[20px] flex items-center  gap-[10px] "
+    <nav className="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
+      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+        <Link
+          to="/"
+          className="flex items-center space-x-3 rtl:space-x-reverse"
         >
           <FontAwesomeIcon className="w-7" icon={faPaw} />
           <span className=" md:hidden lg:block">
             {import.meta.env.VITE_APP_NAME}
           </span>
-        </a>
-        <a
-          className="hidden md:block transform hover:scale-105 transition-all duration-400 ease-in"
-          href="/"
-        >
-          Home
-        </a>
-        <a
-          className="hidden md:block transform hover:scale-105 transition-all duration-400 ease-in"
-          href="/"
-        >
-          About
-        </a>
-        <a
-          className="hidden md:block transform hover:scale-105 transition-all duration-400 ease-in"
-          href="/"
-        >
-          Contact
-        </a>
-        <a
-          className="hidden md:block transform hover:scale-105 transition-all duration-400 ease-in"
-          href="/"
-        >
-          Agents
-        </a>
-      </div>
-      <div className="basis-2/5  flex items-center justify-end bg-transparent lg:bg-[#84DCC6] h-full">
-        {currentUser ? (
-          <div className="flex items-center font-bold">
-            <img
-              src={currentUser.avatar || "/noavatar.jpg"}
-              className="w-10 h-10 rounded-[50%] object-cover m-5"
-              alt=""
-            />
-            <span className="hidden md:block">{currentUser.username}</span>
-            <Link
-              className="hidden md:block py-3 px-6  bg-[#FFFFFF] cursor-pointer border-0 m-5 relative"
-              to="/profile"
+        </Link>
+        <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+          {currentUser ? (
+            <div className="relative ml-3">
+              <button
+                onClick={() => setAvatarOpen((prev) => !prev)}
+                type="button"
+                className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                id="user-menu-button"
+                aria-expanded="false"
+                aria-haspopup="true"
+              >
+                <span className="absolute -inset-1.5"></span>
+                <span className="sr-only">Open user menu</span>
+                <img
+                  src={currentUser.avatar || "/noavatar.jpg"}
+                  className="h-8 w-8 rounded-full"
+                  alt=""
+                />
+                {number > 0 && (
+                  <div className="top-[-12px] right-[-12px] absolute bg-red-600 text-white rounded-[50%] h-6 w-6 flex items-center justify-center">
+                    {number}
+                  </div>
+                )}
+              </button>
+
+              <div
+                className={`${
+                  avatarOpen ? "hidden" : "block"
+                }  absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}
+                role="menu"
+                aria-orientation="vertical"
+                aria-labelledby="user-menu-button"
+              >
+                <Link
+                  to="/profile"
+                  className="block px-4 py-2 text-sm text-gray-700"
+                  role="menuitem"
+                  id="user-menu-item-0"
+                >
+                  Your Profile
+                </Link>
+                <button
+                  onClick={handleLoogout}
+                  className="block px-4 py-2 text-sm text-gray-700"
+                  role="menuitem"
+                  id="user-menu-item-2"
+                >
+                  Sign out
+                </button>
+              </div>
+            </div>
+          ) : (
+            <>
+              <div className="flex justify-between gap-2">
+                <Link
+                  to="/register"
+                  type="button"
+                  className="text-black bg-white border border-gray-400 hover:bg-slate-200 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                >
+                  Sign Up
+                </Link>
+                <Link
+                  to="/login"
+                  type="button"
+                  className="text-white bg-teal-700 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                >
+                  Sign In
+                </Link>
+              </div>
+            </>
+          )}
+
+          <button
+            onClick={() => setOpen(!open)}
+            type="button"
+            className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+            aria-controls="navbar-sticky"
+            aria-expanded={open ? "true" : "false"}
+          >
+            <span className="sr-only">Open main menu</span>
+
+            <svg
+              className={`${open ? "hidden" : "block"} w-5 h-5`}
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              aria-hidden="true"
             >
-              {number > 0 && (
-                <div className="top-[-8px] right-[-8px] absolute bg-red-600 text-white rounded-[50%] h-6 w-6 flex items-center justify-center">
-                  {number}
-                </div>
-              )}
-              <span>Profile</span>
-            </Link>
-          </div>
-        ) : (
-          <>
-            <a
-              className="hidden md:block py-[12px] px-[24px] m-[20px] transform hover:scale-105 transition-all duration-400 ease-in"
-              href="/login"
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+              />
+            </svg>
+            <svg
+              className={`${open ? "block" : "hidden"} w-5 h-5`}
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              aria-hidden="true"
             >
-              Sign in
-            </a>
-            <a
-              className="hidden md:block py-[12px] px-[24px] m-[20px] transform hover:scale-105 transition-all duration-400 ease-in bg-[#FFFFFF]"
-              href="/register"
-            >
-              Sign up
-            </a>
-          </>
-        )}
-        <div className="md:hidden z-[999]">
-          <FontAwesomeIcon
-            onClick={() => setOpen((prev) => !prev)}
-            className={`${
-              open ? "text-white" : "text-black"
-            } w-[36px] h-[36px] cursor-pointer`}
-            icon={faBars}
-          />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
         </div>
         <div
           className={`${
-            open ? "right-0" : "right-[-50%]"
-          } absolute bg-black text-white h-screen w-1/2 top-0 transition-all duration-400 ease-in flex flex-col items-center justify-center gap-[5px]`}
+            open ? "block" : "hidden"
+          } items-center justify-between w-full md:flex md:w-auto md:order-1`}
+          id="navbar-sticky"
         >
-          <a
-            className=" transform hover:scale-105 transition-all duration-400 ease-in"
-            href="/"
-          >
-            Home
-          </a>
-          <a
-            className=" transform hover:scale-105 transition-all duration-400 ease-in"
-            href="/"
-          >
-            About
-          </a>
-          <a
-            className=" transform hover:scale-105 transition-all duration-400 ease-in"
-            href="/"
-          >
-            Contact
-          </a>
-          <a
-            className=" transform hover:scale-105 transition-all duration-400 ease-in"
-            href="/"
-          >
-            Agents
-          </a>
-          <a
-            className=" transform hover:scale-105 transition-all duration-400 ease-in"
-            href="/"
-          >
-            Sign in
-          </a>
-          <a
-            className="hidden md:block transform hover:scale-105 transition-all duration-400 ease-in"
-            href="/"
-          >
-            Sign up
-          </a>
+          <ul className="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+            <li>
+              <Link
+                to="/"
+                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white dark:hover:bg-gray-700 md:dark:hover:bg-transparent dark:border-gray-700"
+              >
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/"
+                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white dark:hover:bg-gray-700 md:dark:hover:bg-transparent dark:border-gray-700"
+              >
+                About
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/"
+                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white dark:hover:bg-gray-700 md:dark:hover:bg-transparent dark:border-gray-700"
+              >
+                Services
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/"
+                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white dark:hover:bg-gray-700 md:dark:hover:bg-transparent dark:border-gray-700"
+              >
+                Contact
+              </Link>
+            </li>
+          </ul>
         </div>
       </div>
     </nav>
