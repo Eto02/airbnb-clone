@@ -1,10 +1,9 @@
 import React from "react";
 import SearchBar from "../components/SearchBar";
-import { Badge } from "@/components/ui/badge";
 
 const HomPage: React.FC = () => {
   return (
-    <div className="flex h-full ">
+    <div className="flex h-screen ">
       <div className="lg:basis-3/5">
         <div className=" pr-0 lg:pr-[50px] xl:pr-[100px] flex flex-col justify-start md:justify-center gap-[50px] h-full ">
           <h1 className="text-[36px] xl:text-[64px]">
@@ -14,7 +13,7 @@ const HomPage: React.FC = () => {
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo rem
             minus inventore enim tempore fugiat quia iure repellendus
             necessitatibus dolor, magnam dignissimos magni blanditiis, doloribus
-            repellat consequuntur sequi vel! Beatae. <Badge>Badge</Badge>
+            repellat consequuntur sequi vel! Beatae.
           </p>
           <SearchBar />
           <div className="hidden lg:flex justify-between ">
@@ -34,7 +33,7 @@ const HomPage: React.FC = () => {
         </div>
       </div>
       <div className="hidden lg:block lg:basis-2/5 bg-[#84DCC6] relative">
-        <img className="absolute w-[115%] right-0 " src="/bg.png" alt="" />
+        <img className="absolute w-[115%] right-0 top-0" src="/bg.png" alt="" />
       </div>
     </div>
   );

@@ -21,20 +21,26 @@ const Navbar: React.FC = () => {
     try {
       await myAxios.post("/api/auth/logout");
       updateUser(null);
+      setAvatarOpen(false);
+      setOpen(false);
       nav("/");
     } catch (error) {
       console.log(error);
     }
   };
   return (
-    <nav className="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+    <nav className="bg-white dark:bg-gray-900 sticky w-full  shadow-md top-0 start-0 border-b border-gray-200 dark:border-gray-600 z-20">
+      <div className="max-w-screen-xl flex items-center justify-between mx-auto p-4">
         <Link
           to="/"
           className="flex items-center space-x-3 rtl:space-x-reverse"
         >
-          <FontAwesomeIcon className="w-7" icon={faPaw} />
-          <span className=" md:hidden lg:block">
+          <FontAwesomeIcon
+            className="w-7 text-teal-700 "
+            size="2xl"
+            icon={faPaw}
+          />
+          <span className=" md:hidden lg:block  text-teal-700 font-extrabold">
             {import.meta.env.VITE_APP_NAME}
           </span>
         </Link>
@@ -65,8 +71,8 @@ const Navbar: React.FC = () => {
 
               <div
                 className={`${
-                  avatarOpen ? "hidden" : "block"
-                }  absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}
+                  avatarOpen ? "block " : "hidden"
+                } z-[999] absolute right-0  mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}
                 role="menu"
                 aria-orientation="vertical"
                 aria-labelledby="user-menu-button"
@@ -151,7 +157,7 @@ const Navbar: React.FC = () => {
         </div>
         <div
           className={`${
-            open ? "block" : "hidden"
+            open ? "block  " : "hidden"
           } items-center justify-between w-full md:flex md:w-auto md:order-1`}
           id="navbar-sticky"
         >

@@ -45,7 +45,7 @@ const Register: React.FC = () => {
 
   return (
     <div className="h-full flex">
-      <div className="basis-3/5 h-full flex items-center justify-center">
+      <div className="basis-3/5 h-screen flex items-center justify-center">
         <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
           <h1>Create an Account</h1>
           <input
@@ -78,7 +78,7 @@ const Register: React.FC = () => {
           </Link>
         </form>
       </div>
-      <div className="hidden lg:block lg:basis-2/5 bg-[#84DCC6] relative">
+      <div className="hidden h-full lg:block lg:basis-2/5 bg-[#84DCC6] relative">
         <img className="absolute w-[115%] right-0 " src="/bg.png" alt="" />
       </div>
     </div>

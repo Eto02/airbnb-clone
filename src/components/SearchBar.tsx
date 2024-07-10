@@ -37,7 +37,7 @@ const SearchBar: React.FC = () => {
           <button
             className={`${
               query.type == type ? "bg-black text-white " : "bg-white"
-            } px-[36px] py-[16px] border-border border-solid border-b-0  border-[#999] cursor-pointer capitalize first:rounded-tl-[5px] first:border-r-0 last:rounded-tr-[5px] last:border-l-0  `}
+            } px-[36px] py-[16px] border border-solid border-b-0  border-[#999] cursor-pointer capitalize first:rounded-tl-[5px] first:border-r-0 last:rounded-tr-[5px] last:border-l-0  `}
             key={type}
             onClick={() => switchType(type)}
           >
@@ -45,7 +45,7 @@ const SearchBar: React.FC = () => {
           </button>
         ))}
       </div>
-      <form className="md:border-1 md:border-solid md:border-[#999] flex flex-col md:flex-row justify-between h-[64px]  gap-[5px] md:gap-0">
+      <form className=" border md:border-1 md:border-solid md:border-[#999] flex flex-col md:flex-row justify-between h-[64px]  gap-[5px] md:gap-0">
         <input
           type="text"
           name="city"

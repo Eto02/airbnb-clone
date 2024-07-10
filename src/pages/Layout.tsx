@@ -1,13 +1,17 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import Footer from "@/components/Footer";
 
 const Layout: React.FC = () => {
   return (
-    <div className=" xl:bg-[#fff]  md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl  h-screen   mx-auto px-5">
+    <div className="h-screen  overflow-y-scroll">
       <Navbar />
-      <div style={{ height: "calc(100vh - 100px)", marginTop: "65px" }}>
-        <Outlet />
+      <div>
+        <div className="px-20 pb-5 h-full">
+          <Outlet />
+        </div>
+        <Footer />
       </div>
     </div>
   );
