@@ -1,5 +1,5 @@
 import React, { createContext, ReactNode, useEffect, useState } from "react";
-
+const filePrefixAddress = import.meta.env.VITE_BE_ADDRESS + "api/static/";
 export interface AuthContextType {
   currentUser: User | null;
   updateUser: (data: User | null) => void;
@@ -23,6 +23,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   });
 
   const updateUser = (data: User | null): void => {
+    if (data) {
+      data.avatar = data.avatar ? `${filePrefixAddress + data.avatar}` : null;
+    }
     setCurrentUser(data);
   };
 

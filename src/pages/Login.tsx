@@ -45,7 +45,7 @@ const Login: React.FC = () => {
   };
   return (
     <div className="h-full flex">
-      <div className="basis-3/5 h-full flex items-center justify-center">
+      <div className="basis-3/5 h-screen flex items-center justify-center">
         <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
           <h1>Welcome back</h1>
           <input

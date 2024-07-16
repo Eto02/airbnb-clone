@@ -42,24 +42,26 @@ function UploadWidget({ uwConfig, setState }: UploadWidgetProps) {
   }, [loaded]);
 
   const initializeCloudinaryWidget = () => {
-    if (loaded && window.cloudinary) {
-      const myWidget = window.cloudinary.createUploadWidget(
-        uwConfig,
-        (error: any, result: any) => {
-          if (!error && result && result.event === "success") {
-            setState((prev) => [...prev, result.info.secure_url]);
-          }
-        }
-      );
+    // if (loaded && window.cloudinary) {
+    //   const myWidget = window.cloudinary.createUploadWidget(
+    //     uwConfig,
+    //     (error: any, result: any) => {
+    //       if (!error && result && result.event === "success") {
+    //         setState((prev) => [...prev, result.info.secure_url]);
+    //       }
+    //     }
+    //   );
+    //   document.getElementById("upload_widget")?.addEventListener(
+    //     "click",
+    //     function () {
+    //       myWidget.open();
+    //     },
+    //     false
+    //   );
+    // }
+    setState(["url"]);
 
-      document.getElementById("upload_widget")?.addEventListener(
-        "click",
-        function () {
-          myWidget.open();
-        },
-        false
-      );
-    }
+    return uwConfig;
   };
 
   return (

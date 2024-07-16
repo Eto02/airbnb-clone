@@ -78,7 +78,7 @@ const Register: React.FC = () => {
           </Link>
         </form>
       </div>
-      <div className="hidden h-full lg:block lg:basis-2/5 bg-[#84DCC6] relative">
+      <div className="hidden lg:block lg:basis-2/5 bg-[#84DCC6] relative">
         <img className="absolute w-[115%] right-0 " src="/bg.png" alt="" />
       </div>
     </div>
