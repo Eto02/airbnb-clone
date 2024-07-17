@@ -15,7 +15,7 @@ interface CardProps {
 }
 const Card: React.FC<CardProps> = ({ item }) => {
   return (
-    <div className="flex gap-5 w-full">
+    <div className="flex gap-5 w-full mb-7">
       <Link
         to={`/detail/${item.id}`}
         className="basis-2/5 h-52 hidden md:block"

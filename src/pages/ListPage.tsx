@@ -1,11 +1,25 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useState } from "react";
 import { Await, useLoaderData } from "react-router-dom";
 import Card from "../components/Card";
 import Filter from "../components/Filter";
 import Map from "../components/Map";
 import { LoaderPostData, Post } from "../lib/loaders";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 const ListPage: React.FC = () => {
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
   const data = useLoaderData() as LoaderPostData;
   return (
     <div className="flex">
@@ -15,13 +29,45 @@ const ListPage: React.FC = () => {
           <Suspense fallback={<p>Loading...</p>}>
             <Await
               resolve={data.postResponse}
-              errorElement={<p>Error loading package location!</p>}
+              errorElement={<p>Error loading data</p>}
             >
-              {(postResponse) =>
-                postResponse.data.data.map((post: Post) => (
-                  <Card key={post.id} item={post} />
-                ))
-              }
+              {(postResponse) => (
+                <div>
+                  {postResponse.data.data.map((post: Post) => (
+                    <Card key={post.id} item={post} />
+                  ))}
+
+                  <Pagination className="pt-10">
+                    <PaginationContent>
+                      <PaginationItem>
+                        <PaginationPrevious
+                          href="#"
+                          onClick={() => handlePageChange(currentPage - 1)}
+                        />
+                      </PaginationItem>
+                      <PaginationItem>
+                        <PaginationLink
+                          isActive
+                          href="#"
+                          onClick={() => handlePageChange(1)}
+                        >
+                          1
+                        </PaginationLink>
+                      </PaginationItem>
+                      <PaginationItem>
+                        <PaginationEllipsis />
+                      </PaginationItem>
+                      <PaginationItem>
+                        <PaginationNext
+                          href="#"
+                          onClick={() => handlePageChange(currentPage + 1)}
+                        />
+                      </PaginationItem>
+                    </PaginationContent>
+                  </Pagination>
+                </div>
+              )}
+              {/* </> */}
             </Await>
           </Suspense>
         </div>
@@ -30,7 +76,7 @@ const ListPage: React.FC = () => {
         <Suspense fallback={<p>Loading...</p>}>
           <Await
             resolve={data.postResponse}
-            errorElement={<p>Error loading package location!</p>}
+            errorElement={<p>Error loading map!</p>}
           >
             {(postResponse) => <Map items={postResponse.data.data} />}
           </Await>
