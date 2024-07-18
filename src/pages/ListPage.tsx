@@ -1,9 +1,3 @@
-import React, { Suspense, useState } from "react";
-import { Await, useLoaderData } from "react-router-dom";
-import Card from "../components/Card";
-import Filter from "../components/Filter";
-import Map from "../components/Map";
-import { LoaderPostData, Post } from "../lib/loaders";
 import {
   Pagination,
   PaginationContent,
@@ -13,14 +7,37 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import React, { Suspense, useEffect } from "react";
+import {
+  Await,
+  useLoaderData,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
+import Card from "../components/Card";
+import Filter from "../components/Filter";
+import Map from "../components/Map";
+import { LoaderPostData, Post } from "../lib/loaders";
 
 const ListPage: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const currentPage = parseInt(searchParams.get("page") || "1", 10);
 
   const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage);
+    if (newPage < 1) return;
+    const newSearchParams = new URLSearchParams(searchParams.toString());
+    newSearchParams.set("page", newPage.toString());
+    newSearchParams.set("limit", "1");
+    navigate(`?${newSearchParams.toString()}`);
   };
+
+  useEffect(() => {
+    handlePageChange(1);
+  }, []);
+
   const data = useLoaderData() as LoaderPostData;
+
   return (
     <div className="flex">
       <div className="basis-3/5 ">
@@ -36,38 +53,65 @@ const ListPage: React.FC = () => {
                   {postResponse.data.data.map((post: Post) => (
                     <Card key={post.id} item={post} />
                   ))}
+                  {console.log(
+                    currentPage >= postResponse.data.pagination.totalPages
+                  )}
 
                   <Pagination className="pt-10">
                     <PaginationContent>
-                      <PaginationItem>
-                        <PaginationPrevious
-                          href="#"
-                          onClick={() => handlePageChange(currentPage - 1)}
-                        />
-                      </PaginationItem>
+                      {currentPage > 1 && (
+                        <PaginationItem>
+                          <PaginationPrevious
+                            onClick={() => handlePageChange(currentPage - 1)}
+                          />
+                        </PaginationItem>
+                      )}
+                      {currentPage >= 2 && (
+                        <PaginationItem>
+                          <PaginationLink
+                            isActive={false}
+                            onClick={() => handlePageChange(currentPage - 1)}
+                          >
+                            {currentPage - 1}
+                          </PaginationLink>
+                        </PaginationItem>
+                      )}
                       <PaginationItem>
                         <PaginationLink
                           isActive
-                          href="#"
-                          onClick={() => handlePageChange(1)}
+                          onClick={() => handlePageChange(currentPage)}
                         >
-                          1
+                          {currentPage}
                         </PaginationLink>
                       </PaginationItem>
-                      <PaginationItem>
-                        <PaginationEllipsis />
-                      </PaginationItem>
-                      <PaginationItem>
-                        <PaginationNext
-                          href="#"
-                          onClick={() => handlePageChange(currentPage + 1)}
-                        />
-                      </PaginationItem>
+                      {currentPage <
+                        postResponse.data.pagination.totalPages && (
+                        <PaginationItem>
+                          <PaginationLink
+                            isActive={false}
+                            onClick={() => handlePageChange(currentPage + 1)}
+                          >
+                            {currentPage + 1}
+                          </PaginationLink>
+                        </PaginationItem>
+                      )}
+                      {postResponse.data.pagination.totalPages - currentPage >
+                        1 && (
+                        <>
+                          <PaginationItem>
+                            <PaginationEllipsis />
+                          </PaginationItem>
+                          <PaginationItem>
+                            <PaginationNext
+                              onClick={() => handlePageChange(currentPage + 1)}
+                            />
+                          </PaginationItem>
+                        </>
+                      )}
                     </PaginationContent>
                   </Pagination>
                 </div>
               )}
-              {/* </> */}
             </Await>
           </Suspense>
         </div>

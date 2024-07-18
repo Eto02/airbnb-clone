@@ -29,7 +29,16 @@ const Filter: React.FC = () => {
   };
 
   const handleFilter = (): void => {
-    setSearchParams(query as Record<string, string>);
+    const newSearchParams = new URLSearchParams(searchParams.toString());
+    Object.keys(query).forEach((key) => {
+      const value = query[key as keyof Query];
+      if (value) {
+        newSearchParams.set(key, value.toString());
+      } else {
+        newSearchParams.delete(key);
+      }
+    });
+    setSearchParams(newSearchParams);
   };
 
   return (
