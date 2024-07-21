@@ -28,7 +28,7 @@ const ListPage: React.FC = () => {
     if (newPage < 1) return;
     const newSearchParams = new URLSearchParams(searchParams.toString());
     newSearchParams.set("page", newPage.toString());
-    newSearchParams.set("limit", "1");
+    newSearchParams.set("limit", "8");
     navigate(`?${newSearchParams.toString()}`);
   };
 
@@ -53,9 +53,6 @@ const ListPage: React.FC = () => {
                   {postResponse.data.data.map((post: Post) => (
                     <Card key={post.id} item={post} />
                   ))}
-                  {console.log(
-                    currentPage >= postResponse.data.pagination.totalPages
-                  )}
 
                   <Pagination className="pt-10">
                     <PaginationContent>

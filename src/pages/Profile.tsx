@@ -1,17 +1,43 @@
-import React, { Suspense, useContext } from "react";
-import { Await, Link, useLoaderData, useNavigate } from "react-router-dom";
+import React, { Suspense, useContext, useEffect } from "react";
+import {
+  Await,
+  Link,
+  useLoaderData,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import Chat from "../components/Chat";
 import List from "../components/List";
 import { AuthContext, AuthContextType } from "../context/authContext";
 import myAxios from "../lib/axiosConfig";
 import { LoaderPostChatData } from "../lib/loaders";
-
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 const Profile: React.FC = () => {
   const nav = useNavigate();
+  const [searchParams] = useSearchParams();
+  const currentPage = parseInt(searchParams.get("page") || "1", 10);
+
+  const handlePageChange = (newPage: number) => {
+    if (newPage < 1) return;
+    const newSearchParams = new URLSearchParams(searchParams.toString());
+    newSearchParams.set("page", newPage.toString());
+    newSearchParams.set("limit", "5");
+    nav(`?${newSearchParams.toString()}`);
+  };
+
   const { currentUser, updateUser } = useContext(
     AuthContext
   ) as AuthContextType;
   const data = useLoaderData() as LoaderPostChatData;
+
   const handleLoogout = async (): Promise<void> => {
     try {
       await myAxios.post("/api/auth/logout");
@@ -21,6 +47,10 @@ const Profile: React.FC = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    handlePageChange(1);
+  }, []);
   return (
     <div className="flex flex-col lg:flex-row h-full overflow-y-scroll lg:overflow-y-visible">
       <div
@@ -72,7 +102,64 @@ const Profile: React.FC = () => {
               resolve={data.postResponse}
               errorElement={<p>Error loading package location!</p>}
             >
-              {(postResponse) => <List items={postResponse.data.data.post} />}
+              {(postResponse) => (
+                <div>
+                  {<List items={postResponse.data.data} />}
+                  <Pagination className="pt-10">
+                    <PaginationContent>
+                      {currentPage > 1 && (
+                        <PaginationItem>
+                          <PaginationPrevious
+                            onClick={() => handlePageChange(currentPage - 1)}
+                          />
+                        </PaginationItem>
+                      )}
+                      {currentPage >= 2 && (
+                        <PaginationItem>
+                          <PaginationLink
+                            isActive={false}
+                            onClick={() => handlePageChange(currentPage - 1)}
+                          >
+                            {currentPage - 1}
+                          </PaginationLink>
+                        </PaginationItem>
+                      )}
+                      <PaginationItem>
+                        <PaginationLink
+                          isActive
+                          onClick={() => handlePageChange(currentPage)}
+                        >
+                          {currentPage}
+                        </PaginationLink>
+                      </PaginationItem>
+                      {currentPage <
+                        postResponse.data.pagination.totalPages && (
+                        <PaginationItem>
+                          <PaginationLink
+                            isActive={false}
+                            onClick={() => handlePageChange(currentPage + 1)}
+                          >
+                            {currentPage + 1}
+                          </PaginationLink>
+                        </PaginationItem>
+                      )}
+                      {postResponse.data.pagination.totalPages - currentPage >
+                        1 && (
+                        <>
+                          <PaginationItem>
+                            <PaginationEllipsis />
+                          </PaginationItem>
+                          <PaginationItem>
+                            <PaginationNext
+                              onClick={() => handlePageChange(currentPage + 1)}
+                            />
+                          </PaginationItem>
+                        </>
+                      )}
+                    </PaginationContent>
+                  </Pagination>
+                </div>
+              )}
             </Await>
           </Suspense>
 
@@ -80,11 +167,69 @@ const Profile: React.FC = () => {
             <h1 className="font-light">Saved List</h1>
             <Suspense fallback={<p>Loading...</p>}>
               <Await
-                resolve={data.postResponse}
+                resolve={data.savedResponse}
                 errorElement={<p>Error loading package location!</p>}
               >
-                {(postResponse) => (
-                  <List items={postResponse.data.data.savedPost} />
+                {(savedResponse) => (
+                  <div>
+                    {<List items={savedResponse.data.data} />}
+                    <Pagination className="pt-10">
+                      <PaginationContent>
+                        {currentPage > 1 && (
+                          <PaginationItem>
+                            <PaginationPrevious
+                              onClick={() => handlePageChange(currentPage - 1)}
+                            />
+                          </PaginationItem>
+                        )}
+                        {currentPage >= 2 && (
+                          <PaginationItem>
+                            <PaginationLink
+                              isActive={false}
+                              onClick={() => handlePageChange(currentPage - 1)}
+                            >
+                              {currentPage - 1}
+                            </PaginationLink>
+                          </PaginationItem>
+                        )}
+                        <PaginationItem>
+                          <PaginationLink
+                            isActive
+                            onClick={() => handlePageChange(currentPage)}
+                          >
+                            {currentPage}
+                          </PaginationLink>
+                        </PaginationItem>
+                        {currentPage <
+                          savedResponse.data.pagination.totalPages && (
+                          <PaginationItem>
+                            <PaginationLink
+                              isActive={false}
+                              onClick={() => handlePageChange(currentPage + 1)}
+                            >
+                              {currentPage + 1}
+                            </PaginationLink>
+                          </PaginationItem>
+                        )}
+                        {savedResponse.data.pagination.totalPages -
+                          currentPage >
+                          1 && (
+                          <>
+                            <PaginationItem>
+                              <PaginationEllipsis />
+                            </PaginationItem>
+                            <PaginationItem>
+                              <PaginationNext
+                                onClick={() =>
+                                  handlePageChange(currentPage + 1)
+                                }
+                              />
+                            </PaginationItem>
+                          </>
+                        )}
+                      </PaginationContent>
+                    </Pagination>
+                  </div>
                 )}
               </Await>
             </Suspense>
