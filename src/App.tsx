@@ -20,6 +20,7 @@ import ListPage from "./pages/ListPage";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import Register from "./pages/SignUp";
+import SavedPost from "./pages/SavedPost";
 
 const routes: RouteObject[] = [
   {
@@ -66,6 +67,11 @@ const routes: RouteObject[] = [
       {
         path: "/create/post",
         element: <CreatePostPage />,
+      },
+      {
+        path: "/saved",
+        element: <SavedPost />,
+        loader: profilePageLoader as LoaderFunction,
       },
     ],
   },
