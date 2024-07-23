@@ -85,6 +85,14 @@ const Navbar: React.FC = () => {
                 >
                   Your Profile
                 </Link>
+                <Link
+                  to="/saved"
+                  className="block px-4 py-2 text-sm text-gray-700"
+                  role="menuitem"
+                  id="user-menu-item-1"
+                >
+                  Saved
+                </Link>
                 <button
                   onClick={handleLoogout}
                   className="block px-4 py-2 text-sm text-gray-700"

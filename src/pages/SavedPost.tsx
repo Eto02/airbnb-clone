@@ -1,4 +1,5 @@
 import { NewCard } from "@/components/NewCard";
+import { Badge } from "@/components/ui/badge";
 import {
   Pagination,
   PaginationContent,
@@ -8,6 +9,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { Separator } from "@/components/ui/separator";
 import React, { Suspense, useEffect } from "react";
 import {
   Await,
@@ -16,9 +18,6 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import { LoaderPostChatData, Post } from "../lib/loaders";
-import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 const SavedPost: React.FC = () => {
   const nav = useNavigate();
   const [searchParams] = useSearchParams();
