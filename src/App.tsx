@@ -21,6 +21,7 @@ import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import Register from "./pages/SignUp";
 import SavedPost from "./pages/SavedPost";
+import { AuthPage } from "./pages/AuthPage";
 
 const routes: RouteObject[] = [
   {
@@ -48,6 +49,10 @@ const routes: RouteObject[] = [
       {
         path: "/register",
         element: <Register />,
+      },
+      {
+        path: "/authentication",
+        element: <AuthPage />,
       },
     ],
   },
