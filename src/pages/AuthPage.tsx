@@ -14,10 +14,17 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 export function AuthPage() {
   return (
     <div className=" h-screen flex pt-4 ">
+      <div className="hidden lg:block lg:basis-2/5 bg-[#84DCC6] relative">
+        <img
+          className="absolute w-[115%] left-0  scale-x-[-1]"
+          src="/bg.png"
+          alt=""
+        />
+      </div>
       <div className="basis-3/5 grid place-items-center  ">
         <Tabs
           defaultValue="account"
-          className="w-[400px] content-center justify-end"
+          className="w-[500px] content-center justify-end"
         >
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="account">Login</TabsTrigger>
@@ -75,9 +82,6 @@ export function AuthPage() {
             </Card>
           </TabsContent>
         </Tabs>
-      </div>
-      <div className="hidden lg:block lg:basis-2/5 bg-[#84DCC6] relative">
-        <img className="absolute w-[115%] right-0 " src="/bg.png" alt="" />
       </div>
     </div>
   );
