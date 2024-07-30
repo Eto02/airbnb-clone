@@ -18,6 +18,7 @@ import Card from "../components/Card";
 import Filter from "../components/Filter";
 import Map from "../components/Map";
 import { LoaderPostData, Post } from "../lib/loaders";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const ListPage: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -43,7 +44,17 @@ const ListPage: React.FC = () => {
       <div className="basis-3/5 ">
         <div className="pr-[50px] flex flex-col gap-[50px] overflow-y-scroll h-full pb-12">
           <Filter />
-          <Suspense fallback={<p>Loading...</p>}>
+          <Suspense
+            fallback={
+              <div className="flex items-center space-x-4">
+                <Skeleton className="h-12 w-12 rounded-full" />
+                <div className="space-y-2">
+                  <Skeleton className="h-4 w-[250px]" />
+                  <Skeleton className="h-4 w-[200px]" />
+                </div>
+              </div>
+            }
+          >
             <Await
               resolve={data.postResponse}
               errorElement={<p>Error loading data</p>}
@@ -114,7 +125,17 @@ const ListPage: React.FC = () => {
         </div>
       </div>
       <div className="basis-2/5 bg-[#84DCC6]  z-0">
-        <Suspense fallback={<p>Loading...</p>}>
+        <Suspense
+          fallback={
+            <div className="flex flex-col space-y-3">
+              <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-[250px]" />
+                <Skeleton className="h-4 w-[200px]" />
+              </div>
+            </div>
+          }
+        >
           <Await
             resolve={data.postResponse}
             errorElement={<p>Error loading map!</p>}

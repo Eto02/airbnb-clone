@@ -10,27 +10,52 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export function AuthPage() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [currentTab, setCurrentTab] = useState(
+    location.pathname === "/login" ? "login" : "register"
+  );
+
+  useEffect(() => {
+    if (location.pathname === "/login") {
+      setCurrentTab("login");
+    } else if (location.pathname === "/register") {
+      setCurrentTab("register");
+    }
+  }, [location.pathname]);
+
+  const handleTabChange = (value: string) => {
+    if (value === "login") {
+      navigate("/login");
+    } else if (value === "register") {
+      navigate("/register");
+    }
+  };
+
   return (
-    <div className=" h-screen flex pt-4 ">
+    <div className="h-screen flex pt-4">
       <div className="hidden lg:block lg:basis-2/5 bg-[#84DCC6] relative">
         <img
-          className="absolute w-[115%] left-0  scale-x-[-1]"
+          className="absolute w-[115%] left-0 scale-x-[-1]"
           src="/bg.png"
           alt=""
         />
       </div>
-      <div className="basis-3/5 grid place-items-center  ">
+      <div className="basis-3/5 grid place-items-center">
         <Tabs
-          defaultValue="account"
+          value={currentTab}
           className="w-[500px] content-center justify-end"
+          onValueChange={handleTabChange}
         >
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="account">Login</TabsTrigger>
-            <TabsTrigger value="password">Register</TabsTrigger>
+            <TabsTrigger value="login">Login</TabsTrigger>
+            <TabsTrigger value="register">Register</TabsTrigger>
           </TabsList>
-          <TabsContent value="account">
+          <TabsContent value="login">
             <Card>
               <CardHeader>
                 <CardTitle>Login</CardTitle>
@@ -54,7 +79,7 @@ export function AuthPage() {
               </CardFooter>
             </Card>
           </TabsContent>
-          <TabsContent value="password">
+          <TabsContent value="register">
             <Card>
               <CardHeader>
                 <CardTitle>Register</CardTitle>

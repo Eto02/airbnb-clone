@@ -20,6 +20,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { Skeleton } from "@/components/ui/skeleton";
 const Profile: React.FC = () => {
   const nav = useNavigate();
   const [searchParams] = useSearchParams();
@@ -97,7 +98,17 @@ const Profile: React.FC = () => {
               </button>
             </Link>
           </div>
-          <Suspense fallback={<p>Loading...</p>}>
+          <Suspense
+            fallback={
+              <div className="flex items-center space-x-4">
+                <Skeleton className="h-12 w-12 rounded-full" />
+                <div className="space-y-2">
+                  <Skeleton className="h-4 w-[250px]" />
+                  <Skeleton className="h-4 w-[200px]" />
+                </div>
+              </div>
+            }
+          >
             <Await
               resolve={data.postResponse}
               errorElement={<p>Error loading package location!</p>}
@@ -165,7 +176,17 @@ const Profile: React.FC = () => {
 
           <div>
             <h1 className="font-light">Saved List</h1>
-            <Suspense fallback={<p>Loading...</p>}>
+            <Suspense
+              fallback={
+                <div className="flex items-center space-x-4">
+                  <Skeleton className="h-12 w-12 rounded-full" />
+                  <div className="space-y-2">
+                    <Skeleton className="h-4 w-[250px]" />
+                    <Skeleton className="h-4 w-[200px]" />
+                  </div>
+                </div>
+              }
+            >
               <Await
                 resolve={data.savedResponse}
                 errorElement={<p>Error loading package location!</p>}
@@ -238,7 +259,17 @@ const Profile: React.FC = () => {
       </div>
       <div className="basis-2/5 h-screen flex-none bg-[#84DCC6]" id="right">
         <div className="px-5 h-full">
-          <Suspense fallback={<p>Loading...</p>}>
+          <Suspense
+            fallback={
+              <div className="flex flex-col space-y-3">
+                <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+                <div className="space-y-2">
+                  <Skeleton className="h-4 w-[250px]" />
+                  <Skeleton className="h-4 w-[200px]" />
+                </div>
+              </div>
+            }
+          >
             <Await
               resolve={data.chatResponse}
               errorElement={<p>Error loading chats!</p>}

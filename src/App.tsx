@@ -11,17 +11,15 @@ import {
   profilePageLoader,
 } from "./lib/loaders";
 import AuthLayout from "./pages/AuthLayout";
+import { AuthPage } from "./pages/AuthPage";
 import CreatePostPage from "./pages/CreatePostPage";
 import DetailPage from "./pages/DetailPage";
 import ProfileUpdatePage from "./pages/EditProfile";
 import HomPage from "./pages/HomePage";
 import Layout from "./pages/Layout";
 import ListPage from "./pages/ListPage";
-import Login from "./pages/Login";
 import Profile from "./pages/Profile";
-import Register from "./pages/SignUp";
 import SavedPost from "./pages/SavedPost";
-import { AuthPage } from "./pages/AuthPage";
 
 const routes: RouteObject[] = [
   {
@@ -44,14 +42,10 @@ const routes: RouteObject[] = [
       },
       {
         path: "/login",
-        element: <Login />,
+        element: <AuthPage />,
       },
       {
         path: "/register",
-        element: <Register />,
-      },
-      {
-        path: "/authentication",
         element: <AuthPage />,
       },
     ],
