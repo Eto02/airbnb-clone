@@ -15,7 +15,7 @@ import { AuthPage } from "./pages/AuthPage";
 import CreatePostPage from "./pages/CreatePostPage";
 import DetailPage from "./pages/DetailPage";
 import ProfileUpdatePage from "./pages/EditProfile";
-import HomPage from "./pages/HomePage";
+import JumpToSection from "./pages/JumToSection";
 import Layout from "./pages/Layout";
 import ListPage from "./pages/ListPage";
 import Profile from "./pages/Profile";
@@ -28,7 +28,7 @@ const routes: RouteObject[] = [
     children: [
       {
         path: "/",
-        element: <HomPage />,
+        element: <JumpToSection />,
       },
       {
         path: "/list",
