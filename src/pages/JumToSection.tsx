@@ -48,7 +48,7 @@ const sections: Section[] = [
     component: () => null,
     bgColor: "",
     isExternal: true,
-    url: "https://example.com",
+    url: "/list",
   },
 ];
 
