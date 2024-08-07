@@ -1,7 +1,7 @@
 import React from "react";
 import SearchBar from "../components/SearchBar";
 
-const HomPage: React.FC = () => {
+const HomePage: React.FC = () => {
   return (
     <div className="flex h-screen ">
       <div className="lg:basis-3/5">
@@ -39,4 +39,4 @@ const HomPage: React.FC = () => {
   );
 };
 
-export default HomPage;
+export default HomePage;

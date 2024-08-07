@@ -1,9 +1,10 @@
-import React, { useRef } from "react";
-import HomeComponent from "./sections/HomeComponent";
-import AboutComponent from "./sections/AboutComponent";
-import ServicesComponent from "./sections/ServicesComponent";
-import ContactComponent from "./sections/ContactComponent";
 import DynamicNavbar from "@/components/DynamicNavbar";
+import React, { useRef } from "react";
+import HomePage from "./HomePage";
+import AboutComponent from "./sections/AboutComponent";
+import ContactComponent from "./sections/ContactComponent";
+import ServicesComponent from "./sections/ServicesComponent";
+import Footer from "@/components/Footer";
 interface Section {
   id: string;
   title: string;
@@ -17,29 +18,29 @@ const sections: Section[] = [
   {
     id: "home",
     title: "Home",
-    component: HomeComponent,
-    bgColor: "bg-blue-200",
+    component: HomePage,
+    bgColor: "bg-slate-",
     isExternal: false,
   },
   {
     id: "about",
     title: "About",
     component: AboutComponent,
-    bgColor: "bg-green-200",
+    bgColor: "bg-gray-50",
     isExternal: false,
   },
   {
     id: "services",
     title: "Services",
     component: ServicesComponent,
-    bgColor: "bg-yellow-200",
+    bgColor: "bg-gray-50",
     isExternal: false,
   },
   {
     id: "contact",
     title: "Contact",
     component: ContactComponent,
-    bgColor: "bg-red-200",
+    bgColor: "bg-gray-50",
     isExternal: false,
   },
   {
@@ -65,7 +66,7 @@ const JumpToSection: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="h-screen overflow-y-scroll">
       <DynamicNavbar sections={sections} handleScroll={handleScroll} />
 
       {sections.map((section) => {
@@ -75,12 +76,13 @@ const JumpToSection: React.FC = () => {
           <section
             key={section.id}
             ref={sectionRefs.current[section.id]}
-            className={`h-screen ${section.bgColor} flex items-center justify-center`}
+            className={`min-h-screen ${section.bgColor} bg- flex items-center justify-center px-20`}
           >
             <SectionComponent />
           </section>
         );
       })}
+      <Footer />
     </div>
   );
 };

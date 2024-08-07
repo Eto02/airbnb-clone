@@ -24,12 +24,12 @@ import SavedPost from "./pages/SavedPost";
 const routes: RouteObject[] = [
   {
     path: "/",
+    element: <JumpToSection />,
+  },
+  {
+    path: "/",
     element: <Layout />,
     children: [
-      {
-        path: "/",
-        element: <JumpToSection />,
-      },
       {
         path: "/list",
         element: <ListPage />,
