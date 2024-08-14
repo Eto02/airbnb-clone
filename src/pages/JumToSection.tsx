@@ -1,10 +1,10 @@
-import React, { useRef, useState, useEffect } from "react";
 import DynamicNavbar from "@/components/DynamicNavbar";
+import Footer from "@/components/Footer";
+import React, { useEffect, useRef, useState } from "react";
 import HomePage from "./HomePage";
 import AboutComponent from "./sections/AboutComponent";
-import ContactComponent from "./sections/ContactComponent";
 import ServicesComponent from "./sections/ServicesComponent";
-import Footer from "@/components/Footer";
+import TestimoniesSection from "./sections/TestimoniesSection";
 
 interface Section {
   id: string;
@@ -20,7 +20,28 @@ const sections: Section[] = [
     id: "home",
     title: "Home",
     component: HomePage,
-    bgColor: "bg-slate-",
+    bgColor: "bg-slate",
+    isExternal: false,
+  },
+  {
+    id: "services",
+    title: "Services",
+    component: ServicesComponent,
+    bgColor: "bg-teal-600",
+    isExternal: false,
+  },
+  // {
+  //   id: "faq",
+  //   title: "Faq",
+  //   component: ContactComponent,
+  //   bgColor: "bg-gray-50",
+  //   isExternal: false,
+  // },
+  {
+    id: "testimonies",
+    title: "Testimonies",
+    component: TestimoniesSection,
+    bgColor: "bg-gray-50",
     isExternal: false,
   },
   {
@@ -29,28 +50,6 @@ const sections: Section[] = [
     component: AboutComponent,
     bgColor: "bg-gray-50",
     isExternal: false,
-  },
-  {
-    id: "services",
-    title: "Services",
-    component: ServicesComponent,
-    bgColor: "bg-gray-50",
-    isExternal: false,
-  },
-  {
-    id: "contact",
-    title: "Contact",
-    component: ContactComponent,
-    bgColor: "bg-gray-50",
-    isExternal: false,
-  },
-  {
-    id: "external",
-    title: "External Link",
-    component: () => null,
-    bgColor: "",
-    isExternal: true,
-    url: "/list",
   },
 ];
 
@@ -100,7 +99,7 @@ const JumpToSection: React.FC = () => {
           <section
             key={section.id}
             ref={sectionRefs.current[section.id]}
-            className={`min-h-screen ${section.bgColor} flex items-center justify-center px-20`}
+            className={`min-h-screen ${section.bgColor} flex items-center justify-center px-20 py-12`}
           >
             <SectionComponent />
           </section>

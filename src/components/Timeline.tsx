@@ -12,7 +12,7 @@ interface TimelineProps {
 
 const Timeline: React.FC<TimelineProps> = ({ events }) => {
   return (
-    <div className="relative flex flex-col items-center pt-16">
+    <div className="relative flex flex-col items-center ">
       {/* Central Vertical Line */}
       <div className="absolute w-1 bg-gray-300 h-full left-1/2 transform -translate-x-1/2"></div>
 
@@ -25,9 +25,9 @@ const Timeline: React.FC<TimelineProps> = ({ events }) => {
         >
           {/* Event Content */}
           <div
-            className={`bg-white p-4 rounded-lg shadow-md px-20 w-1/2  ${
+            className={` p-4 rounded-lg shadow-md px-20 w-1/2  ${
               index % 2 === 0
-                ? "-ml-4 text-right  text-black"
+                ? "-ml-4 text-right  text-black  bg-white"
                 : "-mr-4 text-left bg-teal-500 text-white"
             }`}
           >
