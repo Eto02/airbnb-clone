@@ -2,17 +2,19 @@ import DynamicNavbar from "@/components/DynamicNavbar";
 import Footer from "@/components/Footer";
 import React, { useEffect, useRef, useState } from "react";
 import HomePage from "./HomePage";
-import AboutComponent from "./sections/AboutComponent";
 import ServicesComponent from "./sections/ServicesComponent";
-import TestimoniesSection from "./sections/TestimoniesSection";
+import Testimonial from "./sections/TestimoniesSection";
+import FaqComponent from "./sections/FaqComponent";
+import LogoClouds from "@/components/LogoClouds";
 
 interface Section {
-  id: string;
-  title: string;
+  id?: string;
+  title?: string;
   component: React.FC;
   bgColor: string;
   isExternal: boolean;
   url?: string;
+  padding?: string;
 }
 
 const sections: Section[] = [
@@ -24,32 +26,27 @@ const sections: Section[] = [
     isExternal: false,
   },
   {
-    id: "services",
-    title: "Services",
+    component: LogoClouds,
+    bgColor: "bg-gray-50",
+    isExternal: false,
+  },
+  {
     component: ServicesComponent,
     bgColor: "bg-teal-600",
     isExternal: false,
   },
-  // {
-  //   id: "faq",
-  //   title: "Faq",
-  //   component: ContactComponent,
-  //   bgColor: "bg-gray-50",
-  //   isExternal: false,
-  // },
   {
-    id: "testimonies",
-    title: "Testimonies",
-    component: TestimoniesSection,
+    id: "faq",
+    title: "Faq",
+    component: FaqComponent,
     bgColor: "bg-gray-50",
     isExternal: false,
   },
   {
-    id: "about",
-    title: "About",
-    component: AboutComponent,
+    component: Testimonial,
     bgColor: "bg-gray-50",
     isExternal: false,
+    padding: " pb-12",
   },
 ];
 
@@ -58,7 +55,9 @@ const JumpToSection: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const sectionRefs = useRef<Record<string, React.RefObject<HTMLElement>>>(
     sections.reduce((acc, section) => {
-      acc[section.id] = React.createRef<HTMLElement>();
+      if (section.id) {
+        acc[section.id] = React.createRef<HTMLElement>();
+      }
       return acc;
     }, {} as Record<string, React.RefObject<HTMLElement>>)
   );
@@ -80,8 +79,9 @@ const JumpToSection: React.FC = () => {
     };
   }, []);
 
-  const handleScrollToSection = (id: string) => {
-    sectionRefs.current[id]?.current?.scrollIntoView({ behavior: "smooth" });
+  const handleScrollToSection = (id: string | undefined) => {
+    if (id)
+      sectionRefs.current[id]?.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   const scrollToTop = () => {
@@ -90,16 +90,20 @@ const JumpToSection: React.FC = () => {
 
   return (
     <div ref={containerRef} className="h-screen overflow-y-scroll relative">
-      <DynamicNavbar sections={sections} handleScroll={handleScrollToSection} />
+      <DynamicNavbar
+        sections={sections.filter((section) => section.id && section.title)}
+        handleScroll={handleScrollToSection}
+      />
 
       {sections.map((section) => {
-        if (section.isExternal) return null;
         const SectionComponent = section.component;
         return (
           <section
-            key={section.id}
-            ref={sectionRefs.current[section.id]}
-            className={`min-h-screen ${section.bgColor} flex items-center justify-center px-20 py-12`}
+            key={section.id || section.title}
+            ref={section.id ? sectionRefs.current[section.id] : undefined}
+            className={`${section.id ? "min-h-screen" : ""} ${
+              section.bgColor
+            } ${section.padding || ""} flex items-center justify-center`}
           >
             <SectionComponent />
           </section>

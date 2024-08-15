@@ -56,7 +56,7 @@ const testimonials: Testimonial[] = [
       "https://images.unsplash.com/photo-1544972381-080a3de28790?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDkwfHxmaXJzdC10aW1lfHx8fDE2Njc0MjA4MTc&ixlib=rb-1.2.1&q=80&w=400",
   },
 ];
-const TestimonialsCarousel: React.FC = () => {
+const Testimonial: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   //   const cardsToShow = 1; // Number of testimonials to show at once
 
@@ -133,4 +133,4 @@ const TestimonialsCarousel: React.FC = () => {
   );
 };
 
-export default TestimonialsCarousel;
+export default Testimonial;

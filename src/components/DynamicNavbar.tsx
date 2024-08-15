@@ -6,11 +6,20 @@ import myAxios from "@/lib/axiosConfig";
 import { faPaw } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+interface Section {
+  id?: string;
+  title?: string;
+  component: React.FC;
+  bgColor: string;
+  isExternal: boolean;
+  url?: string;
+}
 interface NavbarProps {
-  sections: { id: string; title: string; isExternal: boolean; url?: string }[];
-  handleScroll: (id: string) => void;
+  sections: Section[];
+  handleScroll: (id: string | undefined) => void;
 }
 const Navbar: React.FC<NavbarProps> = ({ sections, handleScroll }) => {
+  console.log(sections);
   const [open, setOpen] = useState<boolean>(false);
   const [avatarOpen, setAvatarOpen] = useState<boolean>(false);
   const { currentUser, updateUser } = useContext(
