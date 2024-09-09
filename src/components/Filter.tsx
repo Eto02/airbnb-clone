@@ -2,6 +2,15 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { ChangeEvent, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { Input } from "./ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 export interface Query {
   type: string;
   city: string;
@@ -23,9 +32,15 @@ const Filter: React.FC = () => {
     bedroom: parseInt(searchParams.get("bedroom") || "0"),
   });
   const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement> | string,
+    name?: string
   ): void => {
-    setQuery((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    if (typeof e === "string" && name) {
+      setQuery((prev) => ({ ...prev, [name]: e }));
+    } else if (e && typeof e !== "string") {
+      const { name, value } = e.target;
+      setQuery((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleFilter = (): void => {
@@ -44,15 +59,16 @@ const Filter: React.FC = () => {
   return (
     <div className="flex flex-col gap-[10px]">
       <h1 className="font-light text[24px]">
-        Search result for <b>{searchParams.get("city")}</b>
+        Search result for{" "}
+        <b className="font-bold">{searchParams.get("city")}</b>
       </h1>
-      <div id="top">
+      <div id=" top" className="px-1">
         <div className="flex flex-col gap-[2px]">
           <label className="text[10px] capitalize" htmlFor="city">
             Location
           </label>
-          <input
-            className=" w-full p-[10px] border-1 border-solid border-[#e0e0e0]"
+          <Input
+            // className=" w-full p-[10px] border-1 border-solid border-[#e0e0e0]"
             type="text"
             name="city"
             id="city"
@@ -62,47 +78,56 @@ const Filter: React.FC = () => {
           />
         </div>
       </div>
-      <div id="bottom" className="flex justify-between ">
+      <div id="bottom" className="flex px-1 justify-between ">
         <div className="flex flex-col gap-[2px]">
           <label className="text[10px] capitalize" htmlFor="type">
             Type
           </label>
-          <select
-            onChange={handleChange}
+          <Select
+            onValueChange={(value) => handleChange(value, "type")}
             defaultValue={query.type}
-            className="w-[100px] p-[10px] border-1 border-solid border-[#e0e0e0]"
             name="type"
-            id="type"
           >
-            <option value="">any</option>
-            <option value="buy">buy</option>
-            <option value="rent">rent</option>
-          </select>
+            <SelectTrigger className="w-[100px] p-[10px]">
+              <SelectValue placeholder="Any" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="buy">buy</SelectItem>
+                <SelectItem value="rent">rent</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
         <div className="flex flex-col gap-[2px]">
           <label className="text[10px] capitalize" htmlFor="property">
             Property
           </label>
-          <select
-            onChange={handleChange}
+          <Select
+            onValueChange={handleChange}
             defaultValue={query.property}
-            className="w-[100px] p-[10px] border-1 border-solid border-[#e0e0e0]"
             name="property"
-            id="property"
           >
-            <option value="">any</option>
-            <option value="apartment">Apartment</option>
-            <option value="house">House</option>
-            <option value="condo">Condo</option>
-            <option value="land">Land</option>
-          </select>
+            <SelectTrigger className="w-[100px] p-[10px]">
+              <SelectValue placeholder="Any" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="apartment">Apartment</SelectItem>
+                <SelectItem value="house">House</SelectItem>
+                <SelectItem value="condo">Condo</SelectItem>
+                <SelectItem value="land">Land</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
+
         <div className="flex flex-col gap-[2px]">
           <label className="text[10px] capitalize" htmlFor="minPrice">
             Min Price
           </label>
-          <input
-            className="w-[100px] p-[10px] border-1 border-solid border-[#e0e0e0]"
+          <Input
+            className="w-[100px] p-[10px] "
             type="text"
             name="minPrice"
             id="minPrice"
@@ -115,8 +140,8 @@ const Filter: React.FC = () => {
           <label className="text[10px] capitalize" htmlFor="maxPrice">
             Max Price
           </label>
-          <input
-            className="w-[100px] p-[10px] border-1 border-solid border-[#e0e0e0]"
+          <Input
+            className="w-[100px] p-[10px] "
             type="text"
             name="maxPrice"
             id="maxPrice"
@@ -129,8 +154,8 @@ const Filter: React.FC = () => {
           <label className="text[10px] capitalize" htmlFor="bedroom">
             Bedroom
           </label>
-          <input
-            className="w-[100px] p-[10px] border-1 border-solid border-[#e0e0e0]"
+          <Input
+            className="w-[100px] p-[10px] "
             type="text"
             name="bedroom"
             id="bedroom"

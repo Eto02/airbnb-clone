@@ -40,7 +40,7 @@ const ListPage: React.FC = () => {
   const data = useLoaderData() as LoaderPostData;
 
   return (
-    <div className="flex">
+    <div className="flex h-full">
       <div className="basis-3/5 ">
         <div className="pr-[50px] flex flex-col gap-[50px] overflow-y-scroll h-full pb-12">
           <Filter />
@@ -124,7 +124,7 @@ const ListPage: React.FC = () => {
           </Suspense>
         </div>
       </div>
-      <div className="basis-2/5 bg-[#84DCC6]  z-0">
+      <div className="basis-2/5 bg-[#84DCC6]  z-0 ">
         <Suspense
           fallback={
             <div className="flex flex-col space-y-3">

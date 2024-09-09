@@ -24,6 +24,15 @@ const sections: Section[] = [
     component: HomePage,
     bgColor: "bg-slate",
     isExternal: false,
+    padding: "px-10",
+  },
+  {
+    id: "list",
+    title: "List",
+    component: () => null,
+    bgColor: "",
+    isExternal: true,
+    url: "/list",
   },
   {
     component: LogoClouds,
@@ -41,6 +50,7 @@ const sections: Section[] = [
     component: FaqComponent,
     bgColor: "bg-gray-50",
     isExternal: false,
+    padding: "pb-0",
   },
   {
     component: Testimonial,
@@ -95,20 +105,22 @@ const JumpToSection: React.FC = () => {
         handleScroll={handleScrollToSection}
       />
 
-      {sections.map((section) => {
-        const SectionComponent = section.component;
-        return (
-          <section
-            key={section.id || section.title}
-            ref={section.id ? sectionRefs.current[section.id] : undefined}
-            className={`${section.id ? "min-h-screen" : ""} ${
-              section.bgColor
-            } ${section.padding || ""} flex items-center justify-center`}
-          >
-            <SectionComponent />
-          </section>
-        );
-      })}
+      {sections
+        .filter((section) => section.isExternal == false)
+        .map((section) => {
+          const SectionComponent = section.component;
+          return (
+            <section
+              key={section.id || section.title}
+              ref={section.id ? sectionRefs.current[section.id] : undefined}
+              className={`${section.id ? "min-h-screen" : ""} ${
+                section.bgColor
+              } ${section.padding || ""} flex items-center justify-center`}
+            >
+              <SectionComponent />
+            </section>
+          );
+        })}
 
       {showBackToTop && (
         <button
